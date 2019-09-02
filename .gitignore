@@ -31,6 +31,9 @@
 *.out
 *.app
 
+# Python
+*.pyc
+
 .vs/
 Debug/
 Release/
