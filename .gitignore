@@ -31,6 +31,6 @@
 *.out
 *.app
 
-/src/excelbind/.vs
-/src/excelbind/Debug
-/src/excelbind/Release
+.vs/
+Debug/
+Release/
