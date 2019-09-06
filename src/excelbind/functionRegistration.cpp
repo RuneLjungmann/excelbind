@@ -15,10 +15,7 @@ pointers to both the object and the member function are stored in thunksObjects 
 The free function exposed to Excel (the expf functions created by macros below) then moves the object adress to ecx and jumps to member function.
 */
 
-#define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
-
-#include <codecvt>
-
+#include "typeConversion.h"
 #include "pythonFunctionAdapter.h"
 #include "functionRegistration.h"
 
@@ -35,8 +32,7 @@ void registerPythonFunction(const py::str& pyFunctionName)
 	static int functionIndex = 0;
 
 	const std::string functionName = pyFunctionName;
-	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> convert;
-	const std::wstring functionName_wide = convert.from_bytes(functionName);
+	const std::wstring functionName_wide = cast_string(functionName);
 
 	const std::wstring exportName = L"f" + std::to_wstring(functionIndex);
 	const std::wstring xllName = L"xll." + functionName_wide;

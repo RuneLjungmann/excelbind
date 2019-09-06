@@ -191,12 +191,14 @@
     <ClInclude Include="functionRegistration.h" />
     <ClInclude Include="pythonFunctionAdapter.h" />
     <ClInclude Include="scriptManager.h" />
+    <ClInclude Include="typeConversion.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="excelbind.cpp" />
     <ClCompile Include="functionRegistration.cpp" />
     <ClCompile Include="pythonFunctionAdapter.cpp" />
     <ClCompile Include="scriptManager.cpp" />
+    <ClCompile Include="typeConversion.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\thirdparty\xll12\xll12.vcxproj">
