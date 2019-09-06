@@ -27,7 +27,7 @@ extern "C"
 	void* thunksMethods[10];
 }
 
-void registerPythonFunction(const py::str& pyFunctionName)
+void registerPythonFunction(const py::str& pyFunctionName, const py::str& argumentType)
 {
 	static int functionIndex = 0;
 
@@ -37,17 +37,21 @@ void registerPythonFunction(const py::str& pyFunctionName)
 	const std::wstring exportName = L"f" + std::to_wstring(functionIndex);
 	const std::wstring xllName = L"xll." + functionName_wide;
 
+	BindTypes argumentTypeInternal = static_cast<std::string>(argumentType) == "str" ? BindTypes::STRING : BindTypes::DOUBLE;
+	std::wstring argTypeXll = argumentTypeInternal == BindTypes::STRING ? XLL_CSTRING : XLL_DOUBLE_;
+
 	// create function object and register it in thunks
-	PythonFunctionAdapter* pythonFunction = new PythonFunctionAdapter(functionName);
+	PythonFunctionAdapter* pythonFunction = new PythonFunctionAdapter(functionName, argumentTypeInternal);
 
 	xll::LPOPER(__thiscall PythonFunctionAdapter:: * pFunc)(void*) = &PythonFunctionAdapter::fct;
 
 	thunksMethods[functionIndex] = (void*&)pFunc;
 	thunksObjects[functionIndex] = pythonFunction;
 
+
 	// Information Excel needs to register add-in.
 	xll::Args functionBuilder = xll::Function(XLL_LPOPER, exportName.c_str(), xllName.c_str())
-		.Arg(XLL_DOUBLE_, L"x", L"input")
+		.Arg(argTypeXll.c_str(), L"x", L"input")
 		.Category(L"XLL")
 		.FunctionHelp(L"some help text");
 
