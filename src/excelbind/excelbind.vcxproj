@@ -188,9 +188,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="excelbind.h" />
+    <ClInclude Include="functionRegistration.h" />
+    <ClInclude Include="pythonFunctionAdapter.h" />
+    <ClInclude Include="scriptManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="excelbind.cpp" />
+    <ClCompile Include="functionRegistration.cpp" />
+    <ClCompile Include="pythonFunctionAdapter.cpp" />
+    <ClCompile Include="scriptManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\thirdparty\xll12\xll12.vcxproj">
