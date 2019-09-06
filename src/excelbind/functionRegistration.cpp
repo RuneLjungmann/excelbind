@@ -1,3 +1,20 @@
+/*
+This code handles dynamic registration of a python function.
+
+The approach is very much inspired by the setup in ExcelDNA. 
+However, to support the more dynamic approach to registering which you would want from python, 
+the idea is extended a bit, using a non-standard C++ feature.
+So, when a python function is registered, a pythonFunctionAdapter object is created, 
+which holds a reference to the python function name and a non-virtual method used to invoke the function.
+For this to work from Excel, we need to store both a pointer to the object and the member function.
+The Visual Studio calling conventions for non-virtual member functions are similar to calling free functions, 
+except that the pointer to the object is in register ecx.
+
+More concretley, when a python function is registered, an adapter object is created, and 
+pointers to both the object and the member function are stored in thunksObjects and thunksMethods respectively.
+The free function exposed to Excel (the expf functions created by macros below) then moves the object adress to ecx and jumps to member function.
+*/
+
 #define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
 
 #include <codecvt>
@@ -6,7 +23,7 @@
 #include "functionRegistration.h"
 
 
-// thunk table 
+// thunk tables 
 extern "C"
 {
 	void* thunksObjects[10];
