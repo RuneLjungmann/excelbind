@@ -37,8 +37,8 @@ void registerPythonFunction(const py::str& pyFunctionName, const py::str& argume
 	const std::wstring exportName = L"f" + std::to_wstring(functionIndex);
 	const std::wstring xllName = L"xll." + functionName_wide;
 
-	BindTypes argumentTypeInternal = static_cast<std::string>(argumentType) == "str" ? BindTypes::STRING : BindTypes::DOUBLE;
-	std::wstring argTypeXll = argumentTypeInternal == BindTypes::STRING ? XLL_CSTRING : XLL_DOUBLE_;
+	BindTypes argumentTypeInternal = get_bind_type(argumentType);
+	std::wstring argTypeXll = get_xll_type(argumentTypeInternal);
 
 	// create function object and register it in thunks
 	PythonFunctionAdapter* pythonFunction = new PythonFunctionAdapter(functionName, argumentTypeInternal);
