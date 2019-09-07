@@ -21,16 +21,16 @@
     <ClInclude Include="excelbind.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scriptManager.h">
+    <ClInclude Include="type_conversion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pythonFunctionAdapter.h">
+    <ClInclude Include="function_registration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="functionRegistration.h">
+    <ClInclude Include="script_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="typeConversion.h">
+    <ClInclude Include="python_function_adapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -38,16 +38,16 @@
     <ClCompile Include="excelbind.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scriptManager.cpp">
+    <ClCompile Include="type_conversion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pythonFunctionAdapter.cpp">
+    <ClCompile Include="function_registration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="functionRegistration.cpp">
+    <ClCompile Include="script_manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="typeConversion.cpp">
+    <ClCompile Include="python_function_adapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

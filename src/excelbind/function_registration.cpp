@@ -15,59 +15,59 @@ pointers to both the object and the member function are stored in thunksObjects 
 The free function exposed to Excel (the expf functions created by macros below) then moves the object adress to ecx and jumps to member function.
 */
 
-#include "typeConversion.h"
-#include "pythonFunctionAdapter.h"
-#include "functionRegistration.h"
+#include "type_conversion.h"
+#include "python_function_adapter.h"
+#include "function_registration.h"
 
 
 // thunk tables 
 extern "C"
 {
-	void* thunksObjects[10];
-	void* thunksMethods[10];
+	void* thunks_objects[10];
+	void* thunks_methods[10];
 }
 
-void registerPythonFunction(const py::str& pyFunctionName, const py::str& argumentType)
+void register_python_function(const py::str& py_function_name, const py::str& argument_type)
 {
-	static int functionIndex = 0;
+	static int function_index = 0;
 
-	const std::string functionName = pyFunctionName;
-	const std::wstring functionName_wide = cast_string(functionName);
+	const std::string function_name = py_function_name;
+	const std::wstring function_name_wide = cast_string(function_name);
 
-	const std::wstring exportName = L"f" + std::to_wstring(functionIndex);
-	const std::wstring xllName = L"xll." + functionName_wide;
+	const std::wstring export_name = L"f" + std::to_wstring(function_index);
+	const std::wstring xll_name = L"xll." + function_name_wide;
 
-	BindTypes argumentTypeInternal = get_bind_type(argumentType);
-	std::wstring argTypeXll = get_xll_type(argumentTypeInternal);
+	BindTypes arg_type_internal = get_bind_type(argument_type);
+	std::wstring arg_type_xll = get_xll_type(arg_type_internal);
 
 	// create function object and register it in thunks
-	PythonFunctionAdapter* pythonFunction = new PythonFunctionAdapter(functionName, argumentTypeInternal);
+	PythonFunctionAdapter* python_function = new PythonFunctionAdapter(function_name, arg_type_internal);
 
-	xll::LPOPER(__thiscall PythonFunctionAdapter:: * pFunc)(void*) = &PythonFunctionAdapter::fct;
+	xll::LPOPER(__thiscall PythonFunctionAdapter:: * p_func)(void*) = &PythonFunctionAdapter::fct;
 
-	thunksMethods[functionIndex] = (void*&)pFunc;
-	thunksObjects[functionIndex] = pythonFunction;
+	thunks_objects[function_index] = python_function;
+	thunks_methods[function_index] = (void*&)p_func;
 
 
 	// Information Excel needs to register add-in.
-	xll::Args functionBuilder = xll::Function(XLL_LPOPER, exportName.c_str(), xllName.c_str())
-		.Arg(argTypeXll.c_str(), L"x", L"input")
+	xll::Args functionBuilder = xll::Function(XLL_LPOPER, export_name.c_str(), xll_name.c_str())
+		.Arg(arg_type_xll.c_str(), L"x", L"input")
 		.Category(L"XLL")
 		.FunctionHelp(L"some help text");
 
 	xll::AddIn function = xll::AddIn(functionBuilder);
-	++functionIndex;
+	++function_index;
 }
 
 PYBIND11_EMBEDDED_MODULE(excelbind, m) {
 	// `m` is a `py::module` which is used to bind functions and classes
-	m.def("register", &registerPythonFunction);
+	m.def("register", &register_python_function);
 }
 
 
 #define expf(i) extern "C" __declspec(dllexport,naked)	void f##i(void) {  \
-__asm mov ecx, thunksObjects + i * 4 \
-__asm jmp thunksMethods + i * 4 \
+__asm mov ecx, thunks_objects + i * 4 \
+__asm jmp thunks_methods + i * 4 \
 } \
 
 

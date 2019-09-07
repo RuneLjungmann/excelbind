@@ -1,4 +1,4 @@
-#include "script_manager.h"
+#include "scriptManager.h"
 #include "xll12/xll/xll.h"
 
 ScriptManager& ScriptManager::get()

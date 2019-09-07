@@ -188,17 +188,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="excelbind.h" />
-    <ClInclude Include="functionRegistration.h" />
-    <ClInclude Include="pythonFunctionAdapter.h" />
-    <ClInclude Include="scriptManager.h" />
-    <ClInclude Include="typeConversion.h" />
+    <ClInclude Include="function_registration.h" />
+    <ClInclude Include="python_function_adapter.h" />
+    <ClInclude Include="script_manager.h" />
+    <ClInclude Include="type_conversion.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="excelbind.cpp" />
-    <ClCompile Include="functionRegistration.cpp" />
-    <ClCompile Include="pythonFunctionAdapter.cpp" />
-    <ClCompile Include="scriptManager.cpp" />
-    <ClCompile Include="typeConversion.cpp" />
+    <ClCompile Include="function_registration.cpp" />
+    <ClCompile Include="python_function_adapter.cpp" />
+    <ClCompile Include="script_manager.cpp" />
+    <ClCompile Include="type_conversion.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\thirdparty\xll12\xll12.vcxproj">

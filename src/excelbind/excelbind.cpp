@@ -31,7 +31,7 @@ xll::LPOPER WINAPI xll_function(double x)
 	static xll::OPER result;
 
 	try {
-		auto script = ScriptManager::getScripts();
+		auto script = ScriptManager::get_scripts();
 		auto result_py = script.attr("my_function")(x);
 		result = result_py.cast<double>();
 	}

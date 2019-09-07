@@ -54,14 +54,14 @@ void convert_to_xll_type(py::object in, xll::OPER& out, BindTypes type)
 
 BindTypes get_bind_type(const std::string& py_type_name)
 {
-	static const std::map<std::string, BindTypes> type_conversion_map =
+	static const std::map<std::string, BindTypes> typeConversionMap =
 	{
 		{"float", BindTypes::DOUBLE},
 		{"str", BindTypes::STRING}
 	};
 
-	auto i = type_conversion_map.find(py_type_name);
-	if (i == type_conversion_map.end())
+	auto i = typeConversionMap.find(py_type_name);
+	if (i == typeConversionMap.end())
 	{
 		return BindTypes::DOUBLE;
 	}
@@ -70,10 +70,10 @@ BindTypes get_bind_type(const std::string& py_type_name)
 
 std::wstring get_xll_type(BindTypes type)
 {
-	static const std::map<BindTypes, const wchar_t*> type_conversion_map =
+	static const std::map<BindTypes, const wchar_t*> conversionMap =
 	{
 		{BindTypes::DOUBLE, XLL_DOUBLE_},
 		{BindTypes::STRING, XLL_CSTRING}
 	};
-	return type_conversion_map.find(type)->second;
+	return conversionMap.find(type)->second;
 }
