@@ -194,7 +194,6 @@
     <ClInclude Include="type_conversion.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="excelbind.cpp" />
     <ClCompile Include="function_registration.cpp" />
     <ClCompile Include="python_function_adapter.cpp" />
     <ClCompile Include="script_manager.cpp" />

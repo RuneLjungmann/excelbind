@@ -35,9 +35,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="excelbind.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="type_conversion.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

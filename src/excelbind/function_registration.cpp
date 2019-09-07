@@ -52,11 +52,8 @@ void register_python_function(const py::str& function_name_py, const py::list& a
 	BindTypes return_type = get_bind_type(return_type_py);
 
 	// create function object and register it in thunks
-	PythonFunctionAdapter* python_function = new PythonFunctionAdapter(function_name, argument_types, return_type);
-
-	xll::LPOPER(__thiscall PythonFunctionAdapter:: * p_func)(void*) = &PythonFunctionAdapter::fct;
-	thunks_objects[function_index] = python_function;
-	thunks_methods[function_index] = (void*&)p_func;
+	thunks_objects[function_index] = new PythonFunctionAdapter(function_name, argument_types, return_type);
+	thunks_methods[function_index] = create_function_ptr(argument_types.size());
 
 	// Information Excel needs to register add-in.
 	xll::Args functionBuilder = xll::Function(XLL_LPOPER, export_name.c_str(), xll_name.c_str())
