@@ -9,7 +9,7 @@
 namespace py = pybind11;
 
 
-enum class BindTypes { DOUBLE, STRING };
+enum class BindTypes { DOUBLE, STRING, ARRAY };
 
 
 
