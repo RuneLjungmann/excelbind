@@ -27,33 +27,46 @@ extern "C"
 	void* thunks_methods[10];
 }
 
-void register_python_function(const py::str& py_function_name, const py::str& argument_type)
+void register_python_function(const py::str& function_name_py, const py::list& argument_names_py, const py::list& argument_types_py, const py::str& return_type_py)
 {
 	static int function_index = 0;
 
-	const std::string function_name = py_function_name;
+	const std::string function_name = function_name_py;
 	const std::wstring function_name_wide = cast_string(function_name);
 
 	const std::wstring export_name = L"f" + std::to_wstring(function_index);
 	const std::wstring xll_name = L"xll." + function_name_wide;
 
-	BindTypes arg_type_internal = get_bind_type(argument_type);
-	std::wstring arg_type_xll = get_xll_type(arg_type_internal);
+	std::vector<BindTypes> argument_types;
+	for (auto& i : argument_types_py)
+	{
+		argument_types.push_back(get_bind_type(i.cast<std::string>()));
+	}
+	
+	std::vector<std::wstring> argument_names;
+	for (auto& i : argument_names_py)
+	{
+		argument_names.push_back(i.cast<std::wstring>());
+	}
+	
+	BindTypes return_type = get_bind_type(return_type_py);
 
 	// create function object and register it in thunks
-	PythonFunctionAdapter* python_function = new PythonFunctionAdapter(function_name, arg_type_internal);
+	PythonFunctionAdapter* python_function = new PythonFunctionAdapter(function_name, argument_types, return_type);
 
 	xll::LPOPER(__thiscall PythonFunctionAdapter:: * p_func)(void*) = &PythonFunctionAdapter::fct;
-
 	thunks_objects[function_index] = python_function;
 	thunks_methods[function_index] = (void*&)p_func;
 
-
 	// Information Excel needs to register add-in.
 	xll::Args functionBuilder = xll::Function(XLL_LPOPER, export_name.c_str(), xll_name.c_str())
-		.Arg(arg_type_xll.c_str(), L"x", L"input")
 		.Category(L"XLL")
 		.FunctionHelp(L"some help text");
+
+	for (size_t i = 0; i < argument_names.size(); ++i)
+	{
+		functionBuilder.Arg(get_xll_type(argument_types[i]).c_str(), argument_names[i].c_str(), L"Input");
+	}
 
 	xll::AddIn function = xll::AddIn(functionBuilder);
 	++function_index;
