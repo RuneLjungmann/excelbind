@@ -1,3 +1,4 @@
+#include <exception>
 #include "script_manager.h"
 #include "python_function_adapter.h"
 
@@ -9,70 +10,34 @@ PythonFunctionAdapter::PythonFunctionAdapter(const std::string& python_function_
 	return_type_ = return_type;
 }
 
-xll::LPOPER PythonFunctionAdapter::fct1(void* p0)
-{
-	static xll::OPER res_xll;
+xll::LPOPER PythonFunctionAdapter::fct1(void* p0) { return fct({ p0 }); }
+xll::LPOPER PythonFunctionAdapter::fct2(void* p0, void* p1) { return fct({ p0, p1 }); }
+xll::LPOPER PythonFunctionAdapter::fct3(void* p0, void* p1, void* p2) { return fct({ p0, p1, p2 }); }
+xll::LPOPER PythonFunctionAdapter::fct4(void* p0, void* p1, void* p2, void* p3) { return fct({ p0, p1, p2, p3 }); }
+xll::LPOPER PythonFunctionAdapter::fct5(void* p0, void* p1, void* p2, void* p3, void* p4) { return fct({ p0, p1, p2, p3, p4 }); }
+xll::LPOPER PythonFunctionAdapter::fct6(void* p0, void* p1, void* p2, void* p3, void* p4, void* p5) { return fct({ p0, p1, p2, p3, p4, p5 }); }
+xll::LPOPER PythonFunctionAdapter::fct7(void* p0, void* p1, void* p2, void* p3, void* p4, void* p5, void* p6) { return fct({ p0, p1, p2, p3, p4, p5, p6 }); }
+xll::LPOPER PythonFunctionAdapter::fct8(void* p0, void* p1, void* p2, void* p3, void* p4, void* p5, void* p6, void* p7) { return fct({ p0, p1, p2, p3, p4, p5, p6, p7 }); }
+xll::LPOPER PythonFunctionAdapter::fct9(void* p0, void* p1, void* p2, void* p3, void* p4, void* p5, void* p6, void* p7, void* p8) { return fct({ p0, p1, p2, p3, p4, p5, p6, p7, p8 }); }
+xll::LPOPER PythonFunctionAdapter::fct10(void* p0, void* p1, void* p2, void* p3, void* p4, void* p5, void* p6, void* p7, void* p8, void* p9) { return fct({ p0, p1, p2, p3, p4, p5, p6, p7, p8, p9 }); }
 
-	py::object argument = convert_to_py_type(p0, argument_types_[0]);
+xll::LPOPER PythonFunctionAdapter::fct(const std::initializer_list<void*>& args)
+{
+	py::tuple args_py(args.size());
+	auto j = args.begin();
+	for (size_t i = 0; i < args.size(); ++i, ++j)
+	{
+		args_py[i] = convert_to_py_type(*j, argument_types_[i]);
+	}
+
 	const py::module& scripts = ScriptManager::get_scripts();
-	py::object res_py = scripts.attr(python_function_name_.c_str())(argument);
+	py::object res_py = scripts.attr(python_function_name_.c_str())(*args_py);
+
+	static xll::OPER res_xll;
 	convert_to_xll_type(res_py, res_xll, return_type_);
 	return &res_xll;
 }
 
-xll::LPOPER PythonFunctionAdapter::fct2(void* p0, void* p1)
-{
-	static xll::OPER res_xll;
-
-	py::object argument0 = convert_to_py_type(p0, argument_types_[0]);
-	py::object argument1 = convert_to_py_type(p1, argument_types_[1]);
-	const py::module& scripts = ScriptManager::get_scripts();
-	py::object res_py = scripts.attr(python_function_name_.c_str())(argument0, argument1);
-	convert_to_xll_type(res_py, res_xll, return_type_);
-	return &res_xll;
-}
-
-xll::LPOPER PythonFunctionAdapter::fct3(void* p0, void* p1, void* p2)
-{
-	static xll::OPER res_xll;
-
-	py::object argument0 = convert_to_py_type(p0, argument_types_[0]);
-	py::object argument1 = convert_to_py_type(p1, argument_types_[1]);
-	py::object argument2 = convert_to_py_type(p2, argument_types_[2]);
-	const py::module& scripts = ScriptManager::get_scripts();
-	py::object res_py = scripts.attr(python_function_name_.c_str())(argument0, argument1, argument2);
-	convert_to_xll_type(res_py, res_xll, return_type_);
-	return &res_xll;
-}
-
-xll::LPOPER PythonFunctionAdapter::fct4(void* p0, void* p1, void* p2, void* p3)
-{
-	static xll::OPER res_xll;
-
-	py::object argument0 = convert_to_py_type(p0, argument_types_[0]);
-	py::object argument1 = convert_to_py_type(p1, argument_types_[1]);
-	py::object argument2 = convert_to_py_type(p2, argument_types_[2]);
-	py::object argument3 = convert_to_py_type(p3, argument_types_[3]);
-	const py::module& scripts = ScriptManager::get_scripts();
-	py::object res_py = scripts.attr(python_function_name_.c_str())(argument0, argument1, argument2, argument3);
-	convert_to_xll_type(res_py, res_xll, return_type_);
-	return &res_xll;
-}
-
-xll::LPOPER PythonFunctionAdapter::fct5(void* p0, void* p1, void* p2, void* p3, void* p4)
-{
-	static xll::OPER res_xll;
-
-	py::object argument0 = convert_to_py_type(p0, argument_types_[0]);
-	py::object argument1 = convert_to_py_type(p1, argument_types_[1]);
-	py::object argument2 = convert_to_py_type(p2, argument_types_[2]);
-	py::object argument3 = convert_to_py_type(p3, argument_types_[3]);
-	py::object argument4 = convert_to_py_type(p4, argument_types_[4]);
-	const py::module& scripts = ScriptManager::get_scripts();
-	py::object res_py = scripts.attr(python_function_name_.c_str())(argument0, argument1, argument2, argument3, argument4);
-	convert_to_xll_type(res_py, res_xll, return_type_);
-	return &res_xll;
-}
 
 #define FCT_POINTER(num_args, ...) \
 xll::LPOPER(__thiscall PythonFunctionAdapter:: * pFunc)(##__VA_ARGS__) = &PythonFunctionAdapter::fct##num_args; \
@@ -82,27 +47,17 @@ void* create_function_ptr(unsigned num_arguments)
 {
 	switch (num_arguments)
 	{
-	case 1:
-	{
-		FCT_POINTER(1, void*)
-	}
-	case 2:
-	{
-		FCT_POINTER(2, void*, void*)
-	}
-	case 3:
-	{
-		FCT_POINTER(3, void*, void*, void*)
-	}
-	case 4:
-	{
-		FCT_POINTER(4, void*, void*, void*, void*)
-	}
-	case 5:
-	{
-		FCT_POINTER(5, void*, void*, void*, void*, void*)
-	}
+	case 1:	{ FCT_POINTER(1, void*) }
+	case 2: { FCT_POINTER(2, void*, void*) }
+	case 3: { FCT_POINTER(3, void*, void*, void*) }
+	case 4: { FCT_POINTER(4, void*, void*, void*, void*) }
+	case 5: { FCT_POINTER(5, void*, void*, void*, void*, void*) }
+	case 6: { FCT_POINTER(6, void*, void*, void*, void*, void*, void*) }
+	case 7: { FCT_POINTER(7, void*, void*, void*, void*, void*, void*, void*) }
+	case 8: { FCT_POINTER(8, void*, void*, void*, void*, void*, void*, void*, void*) }
+	case 9: { FCT_POINTER(9, void*, void*, void*, void*, void*, void*, void*, void*, void*) }
+	case 10: { FCT_POINTER(10, void*, void*, void*, void*, void*, void*, void*, void*, void*, void*) }
 	default:
-		return nullptr;
+		throw new std::exception("A maximum of 10 arguments is supported for python functions.");
 	}
 }
