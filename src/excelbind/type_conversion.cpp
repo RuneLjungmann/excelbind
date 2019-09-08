@@ -34,13 +34,11 @@ py::object convert_to_py_type(void* p, BindTypes type)
 	case BindTypes::ARRAY:
 	{
 		FP12* fp = (FP12*)(p);
-		py::buffer_info data =
-			py::buffer_info(
-				fp->array, sizeof(double), py::format_descriptor<double>::format(), 2,
-				{ fp->rows, fp->columns }, { sizeof(double) * fp->columns, sizeof(double) }
+		auto data = py::buffer_info(
+			fp->array, sizeof(double), py::format_descriptor<double>::format(), 2,
+			{ fp->rows, fp->columns }, { sizeof(double) * fp->columns, sizeof(double) }
 		);
-		py::array_t<double> m(data);
-		return (py::object)(m);
+		return static_cast<py::object>(py::array_t<double>(data));
 	}
 	default:
 		return py::object();
@@ -57,6 +55,19 @@ void convert_to_xll_type(py::object in, xll::OPER& out, BindTypes type)
 	case BindTypes::STRING:
 		out = in.cast<std::wstring>().c_str();
 		break;
+	case BindTypes::ARRAY:
+	{
+		py::buffer_info buffer_info = static_cast<py::array_t<double>>(in).request();
+		out = xll::OPER(buffer_info.shape[0], buffer_info.shape[1]);
+
+		double* src = static_cast<double*>(buffer_info.ptr);
+		auto i = out.begin();
+		while (i != out.end())
+		{
+			*i++ = *src++;
+		}
+		break;
+	}
 	default:
 		break;
 	}
