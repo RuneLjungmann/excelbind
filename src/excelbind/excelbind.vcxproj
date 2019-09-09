@@ -187,6 +187,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="configuration.h" />
     <ClInclude Include="excelbind.h" />
     <ClInclude Include="function_registration.h" />
     <ClInclude Include="python_function_adapter.h" />
@@ -194,6 +195,7 @@
     <ClInclude Include="type_conversion.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="configuration.cpp" />
     <ClCompile Include="function_registration.cpp" />
     <ClCompile Include="python_function_adapter.cpp" />
     <ClCompile Include="script_manager.cpp" />

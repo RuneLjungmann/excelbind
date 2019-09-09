@@ -1,7 +1,7 @@
 #include <exception>
 #include "script_manager.h"
 #include "python_function_adapter.h"
-
+#include "configuration.h"
 
 PythonFunctionAdapter::PythonFunctionAdapter(const std::string& python_function_name, std::vector<BindTypes> argument_types, BindTypes return_type)
 {
@@ -39,8 +39,12 @@ xll::LPOPER PythonFunctionAdapter::fct(const std::initializer_list<void*>& args)
 
 		convert_to_xll_type(res_py, res_xll, return_type_);
 	}
-	catch (std::exception&)
+	catch (std::exception& e)
 	{
+		if (Configuration::isErrorMessagesEnabled())
+		{
+			XLL_ERROR(e.what());
+		}
 		res_xll = xll::OPER(xlerr::Num);
 	}
 	return &res_xll;
