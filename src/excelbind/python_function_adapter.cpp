@@ -41,7 +41,7 @@ xll::LPOPER PythonFunctionAdapter::fct(const std::initializer_list<void*>& args)
 	}
 	catch (std::exception& e)
 	{
-		if (Configuration::isErrorMessagesEnabled())
+		if (Configuration::is_error_messages_enabled())
 		{
 			XLL_ERROR(e.what());
 		}

@@ -10,7 +10,7 @@ Configuration::Configuration()
 {
 	std::string user_home_path = std::getenv("HOMEPATH");
 	INIReader reader(user_home_path + "/excelbind.conf");
-	isErrorMessagesEnabled_ = reader.GetBoolean("", "EnableErrorMessages", false);
+	is_error_messages_enabled_ = reader.GetBoolean("", "EnableErrorMessages", false);
 }
 
 Configuration& Configuration::get()

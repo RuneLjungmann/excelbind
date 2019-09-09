@@ -8,9 +8,9 @@ private:
 
 public:
 
-	static bool isErrorMessagesEnabled() { return get().isErrorMessagesEnabled_; }
+	static bool is_error_messages_enabled() { return get().is_error_messages_enabled_; }
 
 private:
-	bool isErrorMessagesEnabled_;
+	bool is_error_messages_enabled_;
 };
 
