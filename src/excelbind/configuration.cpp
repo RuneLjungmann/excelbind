@@ -6,11 +6,21 @@
 #include "inih/INIReader.h"
 #include "configuration.h"
 
+
+INIReader load_config_file()
+{
+    std::string user_home_path = std::getenv("HOMEPATH");
+    INIReader reader(user_home_path + "/excelbind.conf");
+    return reader;
+}
+
 Configuration::Configuration()
 {
-	std::string user_home_path = std::getenv("HOMEPATH");
-	INIReader reader(user_home_path + "/excelbind.conf");
-	is_error_messages_enabled_ = reader.GetBoolean("", "EnableErrorMessages", false);
+    INIReader reader = load_config_file();
+    is_error_messages_enabled_ = reader.GetBoolean("", "EnableErrorMessages", false);
+    virtual_env_ = reader.Get("", "VirtualEnv", "");
+    module_dir_ = reader.Get("", "ModuleDir", "");
+    module_name_ = reader.Get("", "ModuleName", "excelbind_export");
 }
 
 Configuration& Configuration::get()
