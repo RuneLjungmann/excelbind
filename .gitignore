@@ -34,6 +34,7 @@
 # Python
 *.pyc
 
+*.user
 .vs/
 Debug/
 Release/
