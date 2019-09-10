@@ -13,8 +13,6 @@ def open_excel(visible=False):
         excel.Visible = visible
         wrapper = ActivationWrapper(excel)
         yield wrapper
-    except Exception as e:
-        pass
     finally:
         # first try to shut Excel down nicely
         for book in excel.Workbooks:
@@ -25,9 +23,9 @@ def open_excel(visible=False):
 
         # then make sure to kill Excel if process is hanging for some reason
         # noinspection SpellCheckingInspection
-        time.sleep(1)
-        cmd = f'taskkill /f /PID {process_id}'
-        run(cmd, capture_output=False, universal_newlines=True)
+        # time.sleep(1)
+        # cmd = f'taskkill /f /PID {process_id}'
+        # run(cmd, capture_output=False, universal_newlines=True)
 
 
 class ActivationWrapper:
@@ -76,7 +74,11 @@ class ActivationWrapper:
         return self
 
     def set_formula(self, formula):
-        self._active_range.FormulaArray = formula
+        try:
+            self._active_range.FormulaArray = formula
+        except:
+            self._active_range.Formula = formula
+
         return self
 
     @property
