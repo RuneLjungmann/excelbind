@@ -19,6 +19,7 @@ public:
     static const std::string& module_name() { return get().module_name_; }
 
 private:
+    const std::string ini_header;
 	bool is_error_messages_enabled_;
     std::string virtual_env_;
     std::string module_dir_;
