@@ -17,7 +17,7 @@ int ScriptManager::finalize_python()
 	return 1;
 }
 
-void init_virtual_env_paths()
+void set_virtual_env_python_interpreter()
 {
     std::wstring virtual_env = cast_string(Configuration::virtual_env());
     static std::wstring python_home = virtual_env + L"/Scripts";
@@ -29,14 +29,26 @@ void init_virtual_env_paths()
     Py_SetPath(python_path.c_str());
 }
 
+void init_virtual_env_paths()
+{
+    py::module::import("sys").attr("path").cast<py::list>().append(Configuration::virtual_env() + "/Scripts");
+    py::module m = py::module::import("activate_this");
+}
+
 void add_module_dir_to_python_path()
 {
-    static std::wstring python_path = cast_string(Configuration::module_dir()) + L";" + Py_GetPath();
-    Py_SetPath(python_path.c_str());
+    py::module::import("sys").attr("path").cast<py::list>().append(Configuration::module_dir());
 }
 
 int ScriptManager::init_python()
 {
+    if (Configuration::is_virtual_env_set())
+    {
+        set_virtual_env_python_interpreter();
+    }
+    
+    py::initialize_interpreter();
+
     if (Configuration::is_virtual_env_set())
     {
         init_virtual_env_paths();
@@ -46,7 +58,6 @@ int ScriptManager::init_python()
         add_module_dir_to_python_path();
     }
 
-	py::initialize_interpreter();
 	get().scripts = py::module::import(Configuration::module_name().c_str());
 
 	return 1;
