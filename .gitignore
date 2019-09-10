@@ -33,7 +33,10 @@
 
 # Python
 *.pyc
+.idea/
+Pipfile.lock
 
+# Various VS stuff
 *.user
 .vs/
 Debug/
