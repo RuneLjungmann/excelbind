@@ -20,7 +20,6 @@ std::string get_single_setting(const INIReader& reader, const std::string& setti
     std::transform(env_var_name.begin(), env_var_name.end(), env_var_name.begin(), [](unsigned char c) { return std::toupper(c); });
     char* env_var = std::getenv(env_var_name.c_str());
     return env_var ? env_var : reader.Get("excelbind", settings_name, default_setting);
-
 }
 
 Configuration::Configuration()

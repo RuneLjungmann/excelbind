@@ -27,7 +27,20 @@ extern "C"
 	void* thunks_methods[10];
 }
 
-void register_python_function(const py::str& function_name_py, const py::list& argument_names_py, const py::list& argument_types_py, const py::str& return_type_py)
+std::vector<std::wstring> cast_list(const py::list& in)
+{
+    std::vector<std::wstring> out;
+    for (auto& i : in)
+    {
+        out.push_back(i.cast<std::wstring>());
+    }
+    return out;
+}
+
+void register_python_function(
+    const py::str& function_name_py, const py::list& argument_names_py, const py::list& argument_types_py,
+    const py::list& argument_docs_py, const py::str& return_type_py, const py::str & function_doc
+)
 {
 	static int function_index = 0;
 
@@ -43,12 +56,8 @@ void register_python_function(const py::str& function_name_py, const py::list& a
 		argument_types.push_back(get_bind_type(i.cast<std::string>()));
 	}
 	
-	std::vector<std::wstring> argument_names;
-	for (auto& i : argument_names_py)
-	{
-		argument_names.push_back(i.cast<std::wstring>());
-	}
-	
+	std::vector<std::wstring> argument_names = cast_list(argument_names_py);
+    std::vector<std::wstring> argument_docs = cast_list(argument_docs_py);
 	BindTypes return_type = get_bind_type(return_type_py);
 
 	// create function object and register it in thunks
@@ -58,11 +67,11 @@ void register_python_function(const py::str& function_name_py, const py::list& a
 	// Information Excel needs to register add-in.
 	xll::Args functionBuilder = xll::Function(XLL_LPOPER, export_name.c_str(), xll_name.c_str())
 		.Category(L"XLL")
-		.FunctionHelp(L"some help text");
+		.FunctionHelp(function_doc.cast<std::wstring>().c_str());
 
 	for (size_t i = 0; i < argument_names.size(); ++i)
 	{
-		functionBuilder.Arg(get_xll_type(argument_types[i]).c_str(), argument_names[i].c_str(), L"Input");
+		functionBuilder.Arg(get_xll_type(argument_types[i]).c_str(), argument_names[i].c_str(), argument_docs[i].c_str());
 	}
 
 	xll::AddIn function = xll::AddIn(functionBuilder);

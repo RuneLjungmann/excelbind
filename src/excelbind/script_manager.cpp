@@ -17,6 +17,44 @@ int ScriptManager::finalize_python()
 	return 1;
 }
 
+void add_python_helper_functions_to_excelbind_module()
+{
+    py::dict excelbind_scope = py::module::import("excelbind").attr("__dict__").cast<py::dict>();
+    excelbind_scope[py::str("__builtins__")] = py::globals()[py::str("__builtins__")];
+
+    py::exec(R"(
+import os as _os
+import re as _re
+def _parse_doc_string(doc_string):
+    param_regex = _re.compile(
+        r'^:param (?P<param>\w+): (?P<doc>.*)$'
+    )
+    args_docs = {}
+    function_doc_lines = []
+    for item in doc_string.splitlines():
+        g = param_regex.search(item.strip())
+        if g:
+            args_docs[g.group('param')] = g.group('doc')
+        elif ':return:' not in item:
+            function_doc_lines.append(item)
+
+    while function_doc_lines and function_doc_lines[-1].strip() == '':
+        function_doc_lines = function_doc_lines[:-1]
+
+    return _os.linesep.join(function_doc_lines), args_docs
+
+
+def function(f):
+    arguments = {arg_name: t.__name__ for arg_name, t in f.__annotations__.items() if arg_name != 'return'}
+    return_type = f.__annotations__['return'].__name__ if 'return' in f.__annotations__ else ''
+    raw_doc = f.__doc__ or ' '
+    function_doc, arg_docs_dict = _parse_doc_string(raw_doc)
+    arg_docs = [arg_docs_dict.get(item, ' ') for item in arguments.keys()]
+    register(f.__name__, list(arguments.keys()), list(arguments.values()), arg_docs, return_type, function_doc)
+    return f
+)", excelbind_scope);
+}
+
 void set_virtual_env_python_interpreter()
 {
     std::wstring virtual_env = cast_string(Configuration::virtual_env());
@@ -57,7 +95,7 @@ int ScriptManager::init_python()
     {
         add_module_dir_to_python_path();
     }
-
+    add_python_helper_functions_to_excelbind_module();
 	get().scripts = py::module::import(Configuration::module_name().c_str());
 
 	return 1;
