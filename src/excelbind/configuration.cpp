@@ -9,7 +9,7 @@
 
 INIReader load_config_file()
 {
-    std::string user_home_path = std::getenv("HOMEPATH");
+    std::string user_home_path = std::getenv("USERPROFILE");
     INIReader reader(user_home_path + "/excelbind.conf");
     return reader;
 }
