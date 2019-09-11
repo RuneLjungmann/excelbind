@@ -9,7 +9,7 @@ from .excel_test_utilities import open_excel
 def set_env_vars(module_name):
     try:
         backup_env = os.environ.copy()
-        os.environ['EXCELBIND_MODULEDIR'] = str(pathlib.Path(__file__).parent / 'fixtures')
+        os.environ['EXCELBIND_MODULEDIR'] = str(pathlib.Path(__file__).parent / '..' / 'examples')
         os.environ['EXCELBIND_MODULENAME'] = module_name
         if hasattr(sys, 'real_prefix'):
             os.environ['EXCELBIND_VIRTUALENV'] = sys.prefix
