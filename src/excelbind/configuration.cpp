@@ -30,6 +30,8 @@ Configuration::Configuration()
     virtual_env_ = get_single_setting(reader, "VirtualEnv", "");
     module_dir_ = get_single_setting(reader, "ModuleDir", "");
     module_name_ = get_single_setting(reader, "ModuleName", "excelbind_export");
+    function_prefix_ = get_single_setting(reader, "FunctionPrefix", "");
+    excel_category_ = get_single_setting(reader, "ExcelCategory", "Excelbind");
 }
 
 Configuration& Configuration::get()

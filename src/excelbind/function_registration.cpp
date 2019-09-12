@@ -18,7 +18,7 @@ The free function exposed to Excel (the expf functions created by macros below) 
 #include "type_conversion.h"
 #include "python_function_adapter.h"
 #include "function_registration.h"
-
+#include "configuration.h"
 
 // thunk tables 
 extern "C"
@@ -45,10 +45,10 @@ void register_python_function(
 	static int function_index = 0;
 
 	const std::string function_name = function_name_py;
-	const std::wstring function_name_wide = cast_string(function_name);
-
 	const std::wstring export_name = L"f" + std::to_wstring(function_index);
-	const std::wstring xll_name = L"xll." + function_name_wide;
+    const std::wstring xll_name
+        = Configuration::is_function_prefix_set()
+        ? cast_string(Configuration::function_prefix()) + L"." + cast_string(function_name) : cast_string(function_name);
 
 	std::vector<BindTypes> argument_types;
 	for (auto& i : argument_types_py)
@@ -66,7 +66,7 @@ void register_python_function(
 
 	// Information Excel needs to register add-in.
 	xll::Args functionBuilder = xll::Function(XLL_LPOPER, export_name.c_str(), xll_name.c_str())
-		.Category(L"XLL")
+		.Category(cast_string(Configuration::excel_category()).c_str())
 		.FunctionHelp(function_doc.cast<std::wstring>().c_str());
 
 	for (size_t i = 0; i < argument_names.size(); ++i)

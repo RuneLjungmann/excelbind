@@ -11,6 +11,7 @@ def set_env_vars(module_name):
         backup_env = os.environ.copy()
         os.environ['EXCELBIND_MODULEDIR'] = str(pathlib.Path(__file__).parent / '..' / 'examples')
         os.environ['EXCELBIND_MODULENAME'] = module_name
+        os.environ['EXCELBIND_FUNCTIONPREFIX'] = 'excelbind'
         if hasattr(sys, 'real_prefix'):
             os.environ['EXCELBIND_VIRTUALENV'] = sys.prefix
 
@@ -28,8 +29,8 @@ def test_simple_math_function_with_floats(xll_addin_path):
                 excel.new_workbook()
                 .range('A1').set(3.0)
                 .range('A2').set(4.0)
-                .range('B1').set_formula("=xll.add(A1, A2)")
-                .range('B2').set_formula("=xll.mult(A1, A2)")
+                .range('B1').set_formula("=excelbind.add(A1, A2)")
+                .range('B2').set_formula("=excelbind.mult(A1, A2)")
                 .calculate()
             )
 
@@ -46,7 +47,7 @@ def test_simple_string_concatenation(xll_addin_path):
                 excel.new_workbook()
                 .range('A1').set('Hello ')
                 .range('A2').set('World!')
-                .range('B1').set_formula("=xll.concat(A1, A2)")
+                .range('B1').set_formula("=excelbind.concat(A1, A2)")
                 .calculate()
             )
 
@@ -64,8 +65,8 @@ def test_matrix_operations_with_np_ndarray(xll_addin_path):
                 .range('B1').set(2.0)
                 .range('A2').set(1.0)
                 .range('B2').set(4.0)
-                .range('A3').set_formula("=xll.det(A1:B2)")
-                .range('A4:B5').set_formula("=xll.inv(A1:B2)")
+                .range('A3').set_formula("=excelbind.det(A1:B2)")
+                .range('A4:B5').set_formula("=excelbind.inv(A1:B2)")
                 .calculate()
             )
 
