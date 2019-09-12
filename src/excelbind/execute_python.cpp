@@ -5,6 +5,19 @@
 
 #include "type_conversion.h"
 #include "configuration.h"
+/*
+This piece of code registers an Excel function called 'execute_python', that makes it possible to run python code directly from Excel.
+The approach take, is that the provided code is wrapped internally as a function. I.e. the Excel call
+=execute_python("return arg0 + arg1", A1, A2)
+will create the script:
+    def func(arg0, arg1):
+        return arg0 + arg1
+
+    out = func(arg0_in, arg1_in)
+
+where the value of cells A1 and A2 are passed to the local variables arg0_in and arg1_in.
+The local variable out is returned as the result of the call to the execute_python function.
+*/
 
 namespace py = pybind11;
 using namespace pybind11::literals;
