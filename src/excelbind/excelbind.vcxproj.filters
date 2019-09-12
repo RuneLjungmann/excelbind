@@ -18,9 +18,6 @@
     <ClInclude Include="type_conversion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="function_registration.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="script_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -1,7 +1,7 @@
 #include "xll12/xll/xll.h"
 #include "configuration.h"
 #include "type_conversion.h"
-#include "scriptManager.h"
+#include "script_manager.h"
 
 
 ScriptManager& ScriptManager::get()

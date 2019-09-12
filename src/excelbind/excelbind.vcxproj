@@ -188,7 +188,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="configuration.h" />
-    <ClInclude Include="function_registration.h" />
     <ClInclude Include="python_function_adapter.h" />
     <ClInclude Include="script_manager.h" />
     <ClInclude Include="type_conversion.h" />

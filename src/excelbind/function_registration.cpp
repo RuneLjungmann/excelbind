@@ -14,11 +14,14 @@ More concretley, when a python function is registered, an adapter object is crea
 pointers to both the object and the member function are stored in thunksObjects and thunksMethods respectively.
 The free function exposed to Excel (the expf functions created by macros below) then moves the object adress to ecx and jumps to member function.
 */
+#include <Python.h>
+#include "pybind11/embed.h"
 
 #include "type_conversion.h"
 #include "python_function_adapter.h"
-#include "function_registration.h"
 #include "configuration.h"
+
+namespace py = pybind11;
 
 // thunk tables 
 extern "C"
