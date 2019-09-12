@@ -13,14 +13,8 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Python">
-      <UniqueIdentifier>{e661093c-2be6-4a26-a67a-d8783e7c8ede}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="excelbind.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="type_conversion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -53,10 +47,8 @@
     <ClCompile Include="configuration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="temp_script.py">
-      <Filter>Python</Filter>
-    </None>
+    <ClCompile Include="execute_python.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

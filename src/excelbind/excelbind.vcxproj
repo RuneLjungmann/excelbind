@@ -188,7 +188,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="configuration.h" />
-    <ClInclude Include="excelbind.h" />
     <ClInclude Include="function_registration.h" />
     <ClInclude Include="python_function_adapter.h" />
     <ClInclude Include="script_manager.h" />
@@ -196,6 +195,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="configuration.cpp" />
+    <ClCompile Include="execute_python.cpp" />
     <ClCompile Include="function_registration.cpp" />
     <ClCompile Include="python_function_adapter.cpp" />
     <ClCompile Include="script_manager.cpp" />
@@ -205,9 +205,6 @@
     <ProjectReference Include="..\thirdparty\xll12\xll12.vcxproj">
       <Project>{3563c165-8a72-4be5-b8af-fd5904c9030e}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="temp_script.py" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
