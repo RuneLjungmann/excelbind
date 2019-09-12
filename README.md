@@ -1,8 +1,10 @@
 # Excelbind - expose your python code in Excel
 
-Excelbind is an Excel Add-in, that uses the Excel xll api to expose your python code to Excel users in a userfriendly way.
+Excelbind is an Excel Add-in, that uses the Excel xll api to expose your python code to Excel users in an easy and userfriendly way.
 
-It makes it easy to expose python directly in Excel as user-defined functions (UDFs) using a simple decorator:
+You can both expose already existing python functions in Excel as well as run python code directly from Excel.
+
+To expose a python function in Excel as a user-defined function (UDFs) just use the excelbind function decorator:
 
     import excelbind
     
@@ -10,9 +12,10 @@ It makes it easy to expose python directly in Excel as user-defined functions (U
     def my_simple_python_function(x: float, y: float) -> float:
         return x + y
 
-It is also possible to write python code directly inside Excel like:
+To write python code directly inside Excel just use the execute_python function:
 
-    =excelbind.execute_python("return arg1 + arg2", A1, B1)
+    =execute_python("return arg1 + arg2", A1, B1)
+
 
 The project mainly piggybacks on two other projects:
  - [pybind11](https://github.com/pybind/pybind11), which provides a modern C++ api towards python
