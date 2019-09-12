@@ -40,7 +40,7 @@ To do this, start a visual studio command prompt (i.e. run vcvars32.bat as expla
 
 Go to the top excelbind folder and type:
 
-    devenv excelbind.sln /build Release (...or Debug)
+    devenv excelbind.sln /build "Release|x86" (...or "Debug|x86")
 
 The excelbind.xll is now located in the Release (or Debug) subfolder 
 
