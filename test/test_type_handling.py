@@ -1,11 +1,11 @@
 from test.utilities.env_vars import set_env_vars
-from test.utilities.excel import open_excel
+from test.utilities.excel import Excel
 
 
 def test_simple_math_function_with_floats(xll_addin_path):
     with set_env_vars('basic_functions'):
-        with open_excel() as excel:
-            excel.RegisterXLL(xll_addin_path)
+        with Excel() as excel:
+            excel.register_xll(xll_addin_path)
 
             (
                 excel.new_workbook()
@@ -22,8 +22,8 @@ def test_simple_math_function_with_floats(xll_addin_path):
 
 def test_simple_string_concatenation(xll_addin_path):
     with set_env_vars('basic_functions'):
-        with open_excel() as excel:
-            excel.RegisterXLL(xll_addin_path)
+        with Excel() as excel:
+            excel.register_xll(xll_addin_path)
 
             (
                 excel.new_workbook()
@@ -38,8 +38,8 @@ def test_simple_string_concatenation(xll_addin_path):
 
 def test_matrix_operations_with_np_ndarray(xll_addin_path):
     with set_env_vars('basic_functions'):
-        with open_excel() as excel:
-            excel.RegisterXLL(xll_addin_path)
+        with Excel() as excel:
+            excel.register_xll(xll_addin_path)
 
             (
                 excel.new_workbook()

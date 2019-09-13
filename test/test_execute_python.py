@@ -1,11 +1,11 @@
 from test.utilities.env_vars import set_env_vars
-from test.utilities.excel import open_excel
+from test.utilities.excel import Excel
 
 
 def test_simple_script_for_addition(xll_addin_path):
     with set_env_vars('basic_functions'):
-        with open_excel() as excel:
-            excel.RegisterXLL(xll_addin_path)
+        with Excel() as excel:
+            excel.register_xll(xll_addin_path)
 
             (
                 excel.new_workbook()
@@ -16,12 +16,13 @@ def test_simple_script_for_addition(xll_addin_path):
             )
 
             assert excel.range('B1').value == 7.0
+            print("done testing")
 
 
 def test_combination_str_n_float(xll_addin_path):
     with set_env_vars('basic_functions'):
-        with open_excel() as excel:
-            excel.RegisterXLL(xll_addin_path)
+        with Excel() as excel:
+            excel.register_xll(xll_addin_path)
 
             (
                 excel.new_workbook()
@@ -32,3 +33,4 @@ def test_combination_str_n_float(xll_addin_path):
             )
 
             assert excel.range('B1').value == 'Hello times 3.0'
+            print("done testing")
