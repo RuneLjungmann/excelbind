@@ -26,12 +26,20 @@ Excelbind basically ties these two together to expose python to Excel users.
 ## Getting started
 
 ### Requirements
- - Visual Studio 2015 or higher (If you are not using Visual Studio 2019 you will have to change the toolset version in the project files from v142 to v140)
+ - Visual Studio 2015 or higher
  - Python 3.5 or higher (x86 version) with the pipenv package installed 
  - Excel 2007 or higher (x86 version) 
 
 See the 'limitations' section below for details on these requirements.
 
+### Initial configuration
+Out of the box, the project configuration assumes you are using Visual Studio 2019 and Python 3.7 and that python is installed in the default directory (C:\python37).
+
+If this is not the case, you will have to make some minor adjustment to the project and property files.
+
+If you use an older version of Visual Studio you will have to change the 'PlatformToolset' property to v140 (Visual Studio 2015) or v141 (Visual Studio 2017).
+
+If you are using an older version of python, or python is not installed in the default location, you need to update the path in the properties files in excelbind/src/excelbind/project_properties
 
 ### Building the xll Add-in
 You can either open the solution file directly in the Visual Studio IDE and build there, or build from the command line. 

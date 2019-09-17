@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <PythonHome>c:/python37_x64</PythonHome>
+    <PythonLib>python37_d.lib</PythonLib>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup />
+  <ItemGroup>
+    <BuildMacro Include="PythonHome">
+      <Value>$(PythonHome)</Value>
+    </BuildMacro>
+    <BuildMacro Include="PythonLib">
+      <Value>$(PythonLib)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
