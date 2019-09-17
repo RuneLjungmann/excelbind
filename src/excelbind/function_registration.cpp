@@ -26,9 +26,10 @@ namespace py = pybind11;
 // thunk tables 
 extern "C"
 {
-	void* thunks_objects[10];
-	void* thunks_methods[10];
+    void* thunks_objects[10];
+    void* thunks_methods[10];
 }
+
 
 std::vector<std::wstring> cast_list(const py::list& in)
 {
@@ -86,20 +87,3 @@ PYBIND11_EMBEDDED_MODULE(excelbind, m) {
 	m.def("register", &register_python_function);
 }
 
-
-#define expf(i) extern "C" __declspec(dllexport,naked)	void f##i(void) {  \
-__asm mov ecx, thunks_objects + i * 4 \
-__asm jmp thunks_methods + i * 4 \
-} \
-
-
-expf(0)
-expf(1)
-expf(2)
-expf(3)
-expf(4)
-expf(5)
-expf(6)
-expf(7)
-expf(8)
-expf(9)
