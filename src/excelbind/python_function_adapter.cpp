@@ -55,7 +55,7 @@ xll::LPOPER PythonFunctionAdapter::fct(const std::initializer_list<void*>& args)
 xll::LPOPER(__thiscall PythonFunctionAdapter:: * pFunc)(##__VA_ARGS__) = &PythonFunctionAdapter::fct##num_args; \
 return (void*&)pFunc;
 
-void* create_function_ptr(unsigned num_arguments)
+void* create_function_ptr(size_t num_arguments)
 {
 	switch (num_arguments)
 	{

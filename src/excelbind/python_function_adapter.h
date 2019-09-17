@@ -26,4 +26,4 @@ private:
 	BindTypes return_type_;
 };
 
-void* create_function_ptr(unsigned num_arguments);
+void* create_function_ptr(size_t num_arguments);

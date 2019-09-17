@@ -58,7 +58,7 @@ void convert_to_xll_type(py::object in, xll::OPER& out, BindTypes type)
 	case BindTypes::ARRAY:
 	{
 		py::buffer_info buffer_info = static_cast<py::array_t<double>>(in).request();
-		out = xll::OPER(buffer_info.shape[0], buffer_info.shape[1]);
+		out = xll::OPER(static_cast<int>(buffer_info.shape[0]), static_cast<int>(buffer_info.shape[1]));
 
 		double* src = static_cast<double*>(buffer_info.ptr);
 		auto i = out.begin();
