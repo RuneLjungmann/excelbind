@@ -49,41 +49,47 @@ void register_python_function(
 	static int function_index = 0;
 
 	const std::string function_name = function_name_py;
-	const std::wstring export_name = L"f" + std::to_wstring(function_index);
+    if (argument_names_py.size() > 10)
+    {
+        std::string err_msg = "The python function " + function_name + " has too many arguments. A maximum of 10 is supported";
+        XLL_ERROR(err_msg.c_str());
+        return;
+    }
+
+    const std::wstring export_name = L"f" + std::to_wstring(function_index);
     const std::wstring xll_name
         = Configuration::is_function_prefix_set()
         ? cast_string(Configuration::function_prefix()) + L"." + cast_string(function_name) : cast_string(function_name);
 
-	std::vector<BindTypes> argument_types;
-	for (auto& i : argument_types_py)
-	{
-		argument_types.push_back(get_bind_type(i.cast<std::string>()));
-	}
-	
-	std::vector<std::wstring> argument_names = cast_list(argument_names_py);
+    std::vector<BindTypes> argument_types;
+    for (auto& i : argument_types_py)
+    {
+        argument_types.push_back(get_bind_type(i.cast<std::string>()));
+    }
+
+    std::vector<std::wstring> argument_names = cast_list(argument_names_py);
     std::vector<std::wstring> argument_docs = cast_list(argument_docs_py);
-	BindTypes return_type = get_bind_type(return_type_py);
+    BindTypes return_type = get_bind_type(return_type_py);
 
-	// create function object and register it in thunks
-	thunks_objects[function_index] = new PythonFunctionAdapter(function_name, argument_types, return_type);
-	thunks_methods[function_index] = create_function_ptr(argument_types.size());
+    // create function object and register it in thunks
+    thunks_objects[function_index] = new PythonFunctionAdapter(function_name, argument_types, return_type);
+    thunks_methods[function_index] = create_function_ptr(argument_types.size());
 
-	// Information Excel needs to register add-in.
-	xll::Args functionBuilder = xll::Function(XLL_LPOPER, export_name.c_str(), xll_name.c_str())
-		.Category(cast_string(Configuration::excel_category()).c_str())
-		.FunctionHelp(function_doc.cast<std::wstring>().c_str());
+    // Information Excel needs to register add-in.
+    xll::Args functionBuilder = xll::Function(XLL_LPOPER, export_name.c_str(), xll_name.c_str())
+        .Category(cast_string(Configuration::excel_category()).c_str())
+        .FunctionHelp(function_doc.cast<std::wstring>().c_str());
 
-	for (size_t i = 0; i < argument_names.size(); ++i)
-	{
-		functionBuilder.Arg(get_xll_type(argument_types[i]).c_str(), argument_names[i].c_str(), argument_docs[i].c_str());
-	}
+    for (size_t i = 0; i < argument_names.size(); ++i)
+    {
+        functionBuilder.Arg(get_xll_type(argument_types[i]).c_str(), argument_names[i].c_str(), argument_docs[i].c_str());
+    }
 
-	xll::AddIn function = xll::AddIn(functionBuilder);
-	++function_index;
+    xll::AddIn function = xll::AddIn(functionBuilder);
+    ++function_index;
 }
 
 PYBIND11_EMBEDDED_MODULE(excelbind, m) {
 	// `m` is a `py::module` which is used to bind functions and classes
 	m.def("register", &register_python_function);
 }
-
