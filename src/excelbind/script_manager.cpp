@@ -44,9 +44,16 @@ def _parse_doc_string(doc_string):
     return _os.linesep.join(function_doc_lines), args_docs
 
 
+def _get_type_name(t):
+    if hasattr(t, '__name__'):
+        return t.__name__
+    else:
+        return t._name
+
+
 def function(f):
-    arguments = {arg_name: f.__annotations__[arg_name].__name__ if arg_name in f.__annotations__ else 'Any' for arg_name in f.__code__.co_varnames}
-    return_type = f.__annotations__['return'].__name__ if 'return' in f.__annotations__ else 'Any'
+    arguments = {arg_name: _get_type_name(f.__annotations__[arg_name]) if arg_name in f.__annotations__ else 'Any' for arg_name in f.__code__.co_varnames}
+    return_type = _get_type_name(f.__annotations__['return']) if 'return' in f.__annotations__ else 'Any'
     raw_doc = f.__doc__ or ' '
     function_doc, arg_docs_dict = _parse_doc_string(raw_doc)
     arg_docs = [arg_docs_dict.get(item, ' ') for item in arguments.keys()]

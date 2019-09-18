@@ -1,3 +1,4 @@
+from typing import List, Dict
 import numpy as np
 
 import excelbind
@@ -42,3 +43,18 @@ def concat(s1: str, s2: str) -> str:
 @excelbind.function
 def add_without_type_info(x, y):
     return x + y
+
+
+@excelbind.function
+def listify(x, y, z) -> List:
+    return [x, y, z]
+
+
+@excelbind.function
+def filter_dict(d: Dict, filter: str) -> Dict:
+    return {key: val for key, val in d.items() if key != filter}
+
+
+@excelbind.function
+def dot(x: List, y: List) -> float:
+    return sum(a*b for a, b in zip(x, y))

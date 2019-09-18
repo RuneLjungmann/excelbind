@@ -1,5 +1,3 @@
-- execute_python function should handle generic types
-- Handle dicts + lists
 - Improve handling of functions with return type ndarrays (use FP directly)
 - Consider alternative handling of memory - will the static OPERS cause problems?
 - Readthedocs - or similar

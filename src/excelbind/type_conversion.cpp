@@ -6,7 +6,6 @@
 #include "type_conversion.h"
 
 
-
 std::string cast_string(const std::wstring& in)
 {
 	std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> convert;
@@ -24,6 +23,73 @@ std::string cast_string(const xll::OPER& oper)
     return cast_string(std::wstring(oper.val.str + 1, oper.val.str[0]));
 }
 
+bool has_dict_shape(const xll::OPER& in)
+{
+    return in.isMulti() && in.rows() > 1 && in.columns() > 1 && (in.rows() == 2 || in.columns() == 2);
+}
+
+bool has_list_shape(const xll::OPER& in)
+{
+    return in.isMulti() && (in.rows() == 1 || in.columns() == 1);
+}
+
+py::dict cast_oper_to_dict(const xll::OPER& in)
+{
+    if (in.columns() == 2)
+    {
+        py::dict out;
+        for (size_t i = 0; i < in.rows(); ++i)
+        {
+            py::object key = cast_oper_to_py(in(static_cast<int>(i), 0));
+            py::object val = cast_oper_to_py(in(static_cast<int>(i), 1));
+            out[key] = val;
+        }
+        return out;
+    }
+    if (in.rows() == 2)
+    {
+        py::dict out;
+        for (size_t i = 0; i < in.columns(); ++i)
+        {
+            py::object key = cast_oper_to_py(in(0, static_cast<int>(i)));
+            py::object val = cast_oper_to_py(in(1, static_cast<int>(i)));
+            out[key] = val;
+        }
+        return out;
+    }
+    return py::none();
+}
+
+void cast_dict_to_oper(const py::dict& in, xll::OPER& out)
+{
+    out = xll::OPER(static_cast<int>(in.size()), 2);
+    size_t i = 0;
+    for (auto item : in)
+    {
+        cast_py_to_oper(item.first, out(static_cast<int>(i), 0));
+        cast_py_to_oper(item.second, out(static_cast<int>(i++), 1));
+    }
+}
+
+py::list cast_oper_to_list(const xll::OPER& in)
+{
+    py::list out;
+    for (auto item : in)
+    {
+        out.append(cast_oper_to_py(item));
+    }
+    return out;
+}
+
+void cast_list_to_oper(const py::list& in, xll::OPER& out)
+{
+    out = xll::OPER(static_cast<int>(in.size()), 1);
+    auto oper_item = out.begin();   
+    for (auto py_item : in)
+    {
+        cast_py_to_oper(py_item, *oper_item++);
+    }
+}
 
 py::object cast_oper_to_py(const xll::OPER& in)
 {
@@ -43,31 +109,35 @@ py::object cast_oper_to_py(const xll::OPER& in)
     {
         return py::str(cast_string(in));
     }
+    else if (has_dict_shape(in))
+    {
+        return cast_oper_to_dict(in);
+    }
+    else if (has_list_shape(in))
+    {
+        return cast_oper_to_list(in);
+    }
 
     return py::none();
 }
 
-void cast_py_to_oper(py::object in, xll::OPER& out)
+void cast_py_to_oper(const py::handle& in, xll::OPER& out)
 {
     if (py::isinstance<py::str>(in))
     {
         out = in.cast<std::wstring>().c_str();
     }
-    else if (py::isinstance<py::int_>(in))
-    {
-        out = in.cast<int>();
-    }
     else if (py::isinstance<py::bool_>(in))
     {
         out = in.cast<bool>();
     }
-    else if (py::isinstance<py::float_>(in))
+    else if (py::isinstance<py::dict>(in))
     {
-        out = in.cast<double>();
+        cast_dict_to_oper(in.cast<py::dict>(), out);
     }
-    else if (py::isinstance<py::none>(in))
+    else if (py::isinstance<py::list>(in))
     {
-        out = xll::OPER();
+        cast_list_to_oper(in.cast<py::list>(), out);
     }
     else
     {
@@ -105,12 +175,20 @@ py::object cast_xll_to_py(void* p, BindTypes type)
     {
         return cast_oper_to_py(*(xll::OPER*)(p));
     }
+    case BindTypes::DICT:
+    {
+        return cast_oper_to_dict(*(xll::OPER*)(p));
+    }
+    case BindTypes::LIST:
+    {
+        return cast_oper_to_list(*(xll::OPER*)(p));
+    }
     default:
 		return py::object();
 	}
 }
 
-void cast_py_to_xll(py::object in, xll::OPER& out, BindTypes type)
+void cast_py_to_xll(const py::object& in, xll::OPER& out, BindTypes type)
 {
 	switch (type)
 	{
@@ -139,6 +217,12 @@ void cast_py_to_xll(py::object in, xll::OPER& out, BindTypes type)
     case BindTypes::OPER:
         cast_py_to_oper(in, out);
         break;
+    case BindTypes::DICT:
+        cast_dict_to_oper(in.cast<py::dict>(), out);
+        break;
+    case BindTypes::LIST:
+        cast_list_to_oper(in.cast<py::list>(), out);
+        break;
     default:
 		break;
 	}
@@ -154,7 +238,9 @@ BindTypes get_bind_type(const std::string& py_type_name)
 		{ "np.ndarray", BindTypes::ARRAY },
 		{ "numpy.ndarray", BindTypes::ARRAY },
         { "bool", BindTypes::BOOLEAN },
-        { "Any", BindTypes::OPER }
+        { "Any", BindTypes::OPER },
+        { "Dict", BindTypes::DICT },
+        { "List", BindTypes::LIST }
     };
 
 	auto i = typeConversionMap.find(py_type_name);
@@ -173,8 +259,9 @@ std::wstring get_xll_type(BindTypes type)
 		{ BindTypes::STRING, XLL_CSTRING },
 		{ BindTypes::ARRAY, XLL_FP },
         { BindTypes::BOOLEAN, XLL_BOOL_ },
-        { BindTypes::OPER, XLL_LPOPER }
-
-	};
+        { BindTypes::OPER, XLL_LPOPER },
+        { BindTypes::DICT, XLL_LPOPER },
+        { BindTypes::LIST, XLL_LPOPER }
+    };
 	return conversionMap.find(type)->second;
 }
