@@ -23,11 +23,11 @@ The free function exposed to Excel (the expf functions created by macros below) 
 
 namespace py = pybind11;
 
-// thunk tables 
+// thunk tables - note the space allocated here should match the number of functions exported in 'fct_exports.asm'
 extern "C"
 {
-    void* thunks_objects[10];
-    void* thunks_methods[10];
+    void* thunks_objects[10000];
+    void* thunks_methods[10000];
 }
 
 

@@ -67,15 +67,16 @@ ELSE
 ENDIF
 .code
 
-fct 0
-fct 1
-fct 2
-fct 3
-fct 4
-fct 5
-fct 6
-fct 7
-fct 8
-fct 9
+
+; Roll out 10000 functions - note the number of functions here should match the space allocated to 
+; the thunks tables in 'function_registration.cpp'
+
+counter = 0
+REPEAT 10000
+    fct %counter
+    counter = counter + 1
+ENDM
+
+
 
 end
