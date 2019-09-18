@@ -8,11 +8,11 @@ So, when a python function is registered, a pythonFunctionAdapter object is crea
 which holds a reference to the python function name and a non-virtual method used to invoke the function.
 For this to work from Excel, we need to store both a pointer to the object and the member function.
 The Visual Studio calling conventions for non-virtual member functions are similar to calling free functions, 
-except that the pointer to the object is in register ecx.
+except that the pointer to the object is in register ecx/rcx.
 
-More concretley, when a python function is registered, an adapter object is created, and 
-pointers to both the object and the member function are stored in thunksObjects and thunksMethods respectively.
-The free function exposed to Excel (the expf functions created by macros below) then moves the object adress to ecx and jumps to member function.
+More concretely, when a python function is registered, an adapter object is created, and 
+pointers to both the object and the member function are stored in thunks_objects and thunks_methods respectively.
+The free function exposed to Excel (the f functions created in fct_exports.asm) then moves the object adress to ecx/rcx and jumps to the member function.
 */
 #include <Python.h>
 #include "pybind11/embed.h"

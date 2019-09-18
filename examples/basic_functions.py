@@ -37,3 +37,8 @@ def concat(s1: str, s2: str) -> str:
     :return: The two strings concatenated
     """
     return s1 + s2
+
+
+@excelbind.function
+def add_without_type_info(x, y):
+    return x + y

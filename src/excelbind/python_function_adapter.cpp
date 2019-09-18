@@ -30,14 +30,14 @@ xll::LPOPER PythonFunctionAdapter::fct(const std::initializer_list<void*>& args)
 		auto j = args.begin();
 		for (size_t i = 0; i < args.size(); ++i, ++j)
 		{
-			args_py[i] = convert_to_py_type(*j, argument_types_[i]);
+			args_py[i] = cast_xll_to_py(*j, argument_types_[i]);
 		}
 
 		const py::module& scripts = ScriptManager::get_scripts();
 
 		py::object res_py = scripts.attr(python_function_name_.c_str())(*args_py);
 
-		convert_to_xll_type(res_py, res_xll, return_type_);
+		cast_py_to_xll(res_py, res_xll, return_type_);
 	}
 	catch (std::exception& e)
 	{

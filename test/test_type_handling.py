@@ -58,3 +58,23 @@ def test_matrix_operations_with_np_ndarray(xll_addin_path):
             assert excel.range('B4').value == -1.0
             assert excel.range('A5').value == -0.5
             assert excel.range('B5').value == 0.5
+
+
+def test_add_without_type_info(xll_addin_path):
+    with set_env_vars('basic_functions'):
+        with Excel() as excel:
+            excel.register_xll(xll_addin_path)
+
+            (
+                excel.new_workbook()
+                .range('A1').set(3.0)
+                .range('A2').set(4.0)
+                .range('B1').set_formula("=excelbind.add_without_type_info(A1, A2)")
+                .range('A3').set('Hello ')
+                .range('A4').set('world!')
+                .range('B2').set_formula("=excelbind.add_without_type_info(A3, A4)")
+                .calculate()
+            )
+
+            assert excel.range('B1').value == 7.0
+            assert excel.range('B2').value == 'Hello world!'

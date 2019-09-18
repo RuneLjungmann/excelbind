@@ -26,10 +26,6 @@ using namespace pybind11::literals;
 #define SOME_UNIQUE_STR "89C86679C2D042AD966268A41890F4F1"
 
 
-std::wstring to_string(const xll::OPER& oper)
-{
-    return std::wstring(oper.val.str + 1, oper.val.str[0]);
-}
 
 
 py::str convert_script_to_function(const XCHAR* script)
@@ -59,44 +55,8 @@ py::str convert_script_to_function(const XCHAR* script)
 }
 
 
-void convert_output(py::object in, xll::OPER& out)
-{
-    if (py::isinstance<py::str>(in))
-    {
-        out = in.cast<std::wstring>().c_str();
-    }
-    else if (py::isinstance<py::int_>(in))
-    {
-        out = in.cast<int>();
-    }
-    else if (py::isinstance<py::float_>(in))
-    {
-        out = in.cast<double>();
-    }
-}
 
 
-py::object convert_input(const xll::OPER & in)
-{
-    if (in.isBool())
-    {
-        return py::bool_(static_cast<bool>(in));
-    }
-    else if (in.isInt())
-    {
-        return py::int_(static_cast<int>(in));
-    }
-    else if (in.isNum())
-    {
-        return py::float_(static_cast<double>(in));
-    }
-    else if (in.isStr())
-    {
-        return py::str(cast_string(to_string(in)));
-    }
-
-    return py::none();
-}
 
 
 #pragma warning(push)
@@ -119,21 +79,21 @@ xll::LPOPER executePython(
     static xll::OPER res_xll;
     try {
         py::dict locals;        
-        locals[py::str("arg0_" SOME_UNIQUE_STR)] = convert_input(*arg0);
-        locals[py::str("arg1_" SOME_UNIQUE_STR)] = convert_input(*arg1);
-        locals[py::str("arg2_" SOME_UNIQUE_STR)] = convert_input(*arg2);
-        locals[py::str("arg3_" SOME_UNIQUE_STR)] = convert_input(*arg3);
-        locals[py::str("arg4_" SOME_UNIQUE_STR)] = convert_input(*arg4);
-        locals[py::str("arg5_" SOME_UNIQUE_STR)] = convert_input(*arg5);
-        locals[py::str("arg6_" SOME_UNIQUE_STR)] = convert_input(*arg6);
-        locals[py::str("arg7_" SOME_UNIQUE_STR)] = convert_input(*arg7);
-        locals[py::str("arg8_" SOME_UNIQUE_STR)] = convert_input(*arg8);
-        locals[py::str("arg9_" SOME_UNIQUE_STR)] = convert_input(*arg9);
+        locals[py::str("arg0_" SOME_UNIQUE_STR)] = cast_oper_to_py(*arg0);
+        locals[py::str("arg1_" SOME_UNIQUE_STR)] = cast_oper_to_py(*arg1);
+        locals[py::str("arg2_" SOME_UNIQUE_STR)] = cast_oper_to_py(*arg2);
+        locals[py::str("arg3_" SOME_UNIQUE_STR)] = cast_oper_to_py(*arg3);
+        locals[py::str("arg4_" SOME_UNIQUE_STR)] = cast_oper_to_py(*arg4);
+        locals[py::str("arg5_" SOME_UNIQUE_STR)] = cast_oper_to_py(*arg5);
+        locals[py::str("arg6_" SOME_UNIQUE_STR)] = cast_oper_to_py(*arg6);
+        locals[py::str("arg7_" SOME_UNIQUE_STR)] = cast_oper_to_py(*arg7);
+        locals[py::str("arg8_" SOME_UNIQUE_STR)] = cast_oper_to_py(*arg8);
+        locals[py::str("arg9_" SOME_UNIQUE_STR)] = cast_oper_to_py(*arg9);
 
         py::str script_py = convert_script_to_function(script);
         py::exec(script_py, py::globals(), locals);
         py::object res_py = locals["out_" SOME_UNIQUE_STR];
-        convert_output(res_py, res_xll);
+        cast_py_to_oper(res_py, res_xll);
     }
     catch (std::exception& e)
     {

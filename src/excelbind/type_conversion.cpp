@@ -19,7 +19,64 @@ std::wstring cast_string(const std::string& in)
 	return convert.from_bytes(in);
 }
 
-py::object convert_to_py_type(void* p, BindTypes type)
+std::string cast_string(const xll::OPER& oper)
+{
+    return cast_string(std::wstring(oper.val.str + 1, oper.val.str[0]));
+}
+
+
+py::object cast_oper_to_py(const xll::OPER& in)
+{
+    if (in.isBool())
+    {
+        return py::bool_(static_cast<bool>(in));
+    }
+    else if (in.isInt())
+    {
+        return py::int_(static_cast<int>(in));
+    }
+    else if (in.isNum())
+    {
+        return py::float_(static_cast<double>(in));
+    }
+    else if (in.isStr())
+    {
+        return py::str(cast_string(in));
+    }
+
+    return py::none();
+}
+
+void cast_py_to_oper(py::object in, xll::OPER& out)
+{
+    if (py::isinstance<py::str>(in))
+    {
+        out = in.cast<std::wstring>().c_str();
+    }
+    else if (py::isinstance<py::int_>(in))
+    {
+        out = in.cast<int>();
+    }
+    else if (py::isinstance<py::bool_>(in))
+    {
+        out = in.cast<bool>();
+    }
+    else if (py::isinstance<py::float_>(in))
+    {
+        out = in.cast<double>();
+    }
+    else if (py::isinstance<py::none>(in))
+    {
+        out = xll::OPER();
+    }
+    else
+    {
+        out = in.cast<double>();
+    }
+}
+
+
+py::object cast_xll_to_py(void* p, BindTypes type)
 {
 	switch (type)
 	{
@@ -40,12 +97,20 @@ py::object convert_to_py_type(void* p, BindTypes type)
 		);
 		return static_cast<py::object>(py::array_t<double>(data));
 	}
-	default:
+    case BindTypes::BOOLEAN:
+    {
+        return py::bool_(*(bool*)(p));
+    }
+    case BindTypes::OPER:
+    {
+        return cast_oper_to_py(*(xll::OPER*)(p));
+    }
+    default:
 		return py::object();
 	}
 }
 
-void convert_to_xll_type(py::object in, xll::OPER& out, BindTypes type)
+void cast_py_to_xll(py::object in, xll::OPER& out, BindTypes type)
 {
 	switch (type)
 	{
@@ -68,7 +133,13 @@ void convert_to_xll_type(py::object in, xll::OPER& out, BindTypes type)
 		}
 		break;
 	}
-	default:
+    case BindTypes::BOOLEAN:
+        out = in.cast<bool>();
+        break;
+    case BindTypes::OPER:
+        cast_py_to_oper(in, out);
+        break;
+    default:
 		break;
 	}
 }
@@ -81,13 +152,15 @@ BindTypes get_bind_type(const std::string& py_type_name)
 		{ "str", BindTypes::STRING },
 		{ "ndarray", BindTypes::ARRAY },
 		{ "np.ndarray", BindTypes::ARRAY },
-		{ "numpy.ndarray", BindTypes::ARRAY }
-	};
+		{ "numpy.ndarray", BindTypes::ARRAY },
+        { "bool", BindTypes::BOOLEAN },
+        { "Any", BindTypes::OPER }
+    };
 
 	auto i = typeConversionMap.find(py_type_name);
 	if (i == typeConversionMap.end())
 	{
-		return BindTypes::DOUBLE;
+		return BindTypes::OPER;
 	}
 	return i->second;
 }
@@ -98,7 +171,10 @@ std::wstring get_xll_type(BindTypes type)
 	{
 		{ BindTypes::DOUBLE, XLL_DOUBLE_ },
 		{ BindTypes::STRING, XLL_CSTRING },
-		{ BindTypes::ARRAY, XLL_FP }
+		{ BindTypes::ARRAY, XLL_FP },
+        { BindTypes::BOOLEAN, XLL_BOOL_ },
+        { BindTypes::OPER, XLL_LPOPER }
+
 	};
 	return conversionMap.find(type)->second;
 }
