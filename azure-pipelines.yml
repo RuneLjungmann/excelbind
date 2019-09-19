@@ -10,13 +10,20 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: '**/*.sln'
+  solution: '**/excelbind.sln'
   buildPlatform: 'x86'
   buildConfiguration: 'Release'
 
 steps:
 - checkout: self
   submodules: true
+
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.7'
+    addToPath: true
+    architecture: 'x86'
+  name: py
 
 - task: NuGetToolInstaller@1
 
@@ -25,4 +32,3 @@ steps:
     solution: '$(solution)'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-
