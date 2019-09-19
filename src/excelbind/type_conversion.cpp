@@ -38,10 +38,10 @@ py::dict cast_oper_to_dict(const xll::OPER& in)
     if (in.columns() == 2)
     {
         py::dict out;
-        for (size_t i = 0; i < in.rows(); ++i)
+        for (int i = 0; i < in.rows(); ++i)
         {
-            py::object key = cast_oper_to_py(in(static_cast<int>(i), 0));
-            py::object val = cast_oper_to_py(in(static_cast<int>(i), 1));
+            py::object key = cast_oper_to_py(in(i, 0));
+            py::object val = cast_oper_to_py(in(i, 1));
             out[key] = val;
         }
         return out;
@@ -49,10 +49,10 @@ py::dict cast_oper_to_dict(const xll::OPER& in)
     if (in.rows() == 2)
     {
         py::dict out;
-        for (size_t i = 0; i < in.columns(); ++i)
+        for (int i = 0; i < in.columns(); ++i)
         {
-            py::object key = cast_oper_to_py(in(0, static_cast<int>(i)));
-            py::object val = cast_oper_to_py(in(1, static_cast<int>(i)));
+            py::object key = cast_oper_to_py(in(0, i));
+            py::object val = cast_oper_to_py(in(1, i));
             out[key] = val;
         }
         return out;
@@ -63,11 +63,11 @@ py::dict cast_oper_to_dict(const xll::OPER& in)
 void cast_dict_to_oper(const py::dict& in, xll::OPER& out)
 {
     out = xll::OPER(static_cast<int>(in.size()), 2);
-    size_t i = 0;
+    int i = 0;
     for (auto item : in)
     {
-        cast_py_to_oper(item.first, out(static_cast<int>(i), 0));
-        cast_py_to_oper(item.second, out(static_cast<int>(i++), 1));
+        cast_py_to_oper(item.first, out(i, 0));
+        cast_py_to_oper(item.second, out(i++, 1));
     }
 }
 
