@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
-  <PropertyGroup Label="UserMacros">
-    <pythonLocation Condition=" '$(pythonLocation)' == '' ">c:/python37_x64</pythonLocation>
-    <PythonLib>python37.lib</PythonLib>
-  </PropertyGroup>
-  <PropertyGroup />
+  <Choose>
+    <When Condition=" '$(USEPYTHONVERSION_PYTHONLOCATION)' == '' ">
+      <PropertyGroup Label="UserMacros">
+        <pythonLocation>c:/python37_x64</pythonLocation>
+        <PythonLib>python37.lib</PythonLib>
+      </PropertyGroup>
+    </When>
+    <When Condition=" '' == '' ">
+      <PropertyGroup Label="UserMacros">
+        <pythonLocation>$(USEPYTHONVERSION_PYTHONLOCATION)</pythonLocation>
+        <PythonLib>python37.lib</PythonLib>
+      </PropertyGroup>
+    </When>
+  </Choose>
   <ItemDefinitionGroup />
   <ItemGroup>
     <BuildMacro Include="pythonLocation">
-      <Value>$(PythonHome)</Value>
+      <Value>$(pythonLocation)</Value>
     </BuildMacro>
     <BuildMacro Include="PythonLib">
       <Value>$(PythonLib)</Value>
