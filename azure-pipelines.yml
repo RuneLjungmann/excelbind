@@ -23,7 +23,9 @@ steps:
     versionSpec: '3.7'
     addToPath: true
     architecture: 'x86'
-  name: py
+
+- script: set
+  displayName: View env vars
 
 - task: NuGetToolInstaller@1
 
