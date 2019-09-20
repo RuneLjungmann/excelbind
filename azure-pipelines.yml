@@ -81,5 +81,7 @@ stages:
     - task: CmdLine@2
       inputs:
         script: |
+          git config user.email "no-reply@none.com"
+          git config user.name "Azure pipeline"
           git commit -a -m "Updated binaries" -m "[skip ci]"
           git push
