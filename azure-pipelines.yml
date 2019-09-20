@@ -11,7 +11,7 @@ pool:
 
 variables:
   solution: '**/excelbind.sln'
-  buildPlatform: 'x86'
+  buildPlatform: x86, x64
   buildConfiguration: 'Release'
 
 steps:
@@ -22,7 +22,7 @@ steps:
   inputs:
     versionSpec: '3.7'
     addToPath: true
-    architecture: 'x86'
+    architecture: $(buildPlatform)
 
 - script: set
   displayName: View env vars
