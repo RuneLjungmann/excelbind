@@ -59,6 +59,9 @@ stages:
   jobs:
   - job: 
     steps:
+    - checkout: self
+      persistCredentials: true
+
     - download: current
       artifact: x86
 
@@ -81,7 +84,8 @@ stages:
     - task: CmdLine@2
       inputs:
         script: |
-          git config user.email "no-reply@none.com"
-          git config user.name "Azure pipeline"
+          git config user.email "53918463+RuneLjungmann@users.noreply.github.com"
+          git config user.name "RuneLjungmann"
+          git checkout master
           git commit -a -m "Updated binaries" -m "[skip ci]"
-          git push
+          git push origin
