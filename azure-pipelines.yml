@@ -67,13 +67,13 @@ stages:
       
     - task: CopyFiles@2
       inputs:
-        SourceFolder: 'x86/Release/'
+        SourceFolder: '../x86/Release/'
         Contents: 'excelbind.xll'
         TargetFolder: 'Binaries'
 
     - task: CopyFiles@2
       inputs:
-        SourceFolder: 'x64/x64/Release/'
+        SourceFolder: '../x64/x64/Release/'
         Contents: 'excelbind.xll'
         TargetFolder: 'Binaries'
 
