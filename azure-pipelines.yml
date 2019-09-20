@@ -6,31 +6,40 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'windows-latest'
-
 variables:
   solution: '**/excelbind.sln'
-  buildPlatform: x86, x64
   buildConfiguration: 'Release'
 
-steps:
-- checkout: self
-  submodules: true
 
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.7'
-    addToPath: true
-    architecture: $(buildPlatform)
+jobs:
+- job: 'Build' 
+  strategy:
+    matrix:
+      x86:
+        buildPlatform: 'x86'
+      x64:
+        buildPlatform: 'x64'
 
-- script: set
-  displayName: View env vars
+  pool:
+    vmImage: 'windows-latest'
 
-- task: NuGetToolInstaller@1
+  steps:
+  - checkout: self
+    submodules: true
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.7'
+      addToPath: true
+      architecture: $(buildPlatform)
+
+  - script: set
+    displayName: View env vars
+
+  - task: NuGetToolInstaller@1
+
+  - task: VSBuild@1
+    inputs:
+      solution: '$(solution)'
+      platform: '$(buildPlatform)'
+      configuration: '$(buildConfiguration)'
