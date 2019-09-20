@@ -8,47 +8,77 @@ variables:
   solution: '**/excelbind.sln'
   buildConfiguration: 'Release'
 
+stages:
+- stage: 'Build stage'
 
-jobs:
-- job: 'Build' 
-  strategy:
-    matrix:
-      x86:
-        buildPlatform: 'x86'
-      x64:
-        buildPlatform: 'x64'
+  jobs:
+  - job: 'Build' 
+    strategy:
+      matrix:
+        x86:
+          buildPlatform: 'x86'
+        x64:
+          buildPlatform: 'x64'
 
-  pool:
-    vmImage: 'windows-latest'
+    pool:
+      vmImage: 'windows-latest'
 
-  steps:
-  - checkout: self
-    submodules: true
+    steps:
+    - checkout: self
+      submodules: true
 
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '3.7'
-      addToPath: true
-      architecture: $(buildPlatform)
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.7'
+        addToPath: true
+        architecture: $(buildPlatform)
 
-  - script: set
-    displayName: View env vars
+    - script: set
+      displayName: View env vars
 
-  - task: NuGetToolInstaller@1
+    - task: NuGetToolInstaller@1
 
-  - task: VSBuild@1
-    inputs:
-      solution: '$(solution)'
-      platform: '$(buildPlatform)'
-      configuration: '$(buildConfiguration)'
+    - task: VSBuild@1
+      inputs:
+        solution: '$(solution)'
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
 
-  - task: CopyFiles@2
-    inputs:
-      Contents: '**/excelbind.xll'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    - task: CopyFiles@2
+      inputs:
+        Contents: '**/excelbind.xll'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
-  - task: PublishBuildArtifacts@1
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: '$(buildPlatform)'
-      publishLocation: 'Container'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: '$(buildPlatform)'
+        publishLocation: 'Container'
+
+- stage: 'Push artifacts'
+  jobs:
+  - job: 
+    steps:
+    - download: current
+      artifact: x86
+
+    - download: current
+      artifact: x64
+      
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: 'x86/Release/'
+        Contents: 'excelbind.xll'
+        TargetFolder: 'Binaries'
+
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: 'x64/x64/Release/'
+        Contents: 'excelbind.xll'
+        TargetFolder: 'Binaries'
+
+- task: CmdLine@2
+  inputs:
+    script: |
+      cd binaries
+      dir
