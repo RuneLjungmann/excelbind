@@ -87,5 +87,5 @@ stages:
           git config user.email "53918463+RuneLjungmann@users.noreply.github.com"
           git config user.name "RuneLjungmann"
           git checkout master
-          git commit -a -m "Updated binaries" -m "[skip ci]"
+          git commit -a -m "Azure Pipeline: Updated binaries" -m "[skip ci]"
           git push origin
