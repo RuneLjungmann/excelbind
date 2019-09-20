@@ -2,23 +2,25 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <Choose>
+    <!-- Checks if the USEPYTHONVERSION_PYTHONLOCATION env var is set
+     (by e.g. Azure pipeline) otherwise default to standard location -->
     <When Condition=" '$(USEPYTHONVERSION_PYTHONLOCATION)' == '' ">
       <PropertyGroup Label="UserMacros">
-        <pythonLocation>c:/python37</pythonLocation>
+        <PythonHome>c:/python37</PythonHome>
         <PythonLib>python37.lib</PythonLib>
       </PropertyGroup>
     </When>
     <When Condition=" '' == '' ">
       <PropertyGroup Label="UserMacros">
-        <pythonLocation>$(USEPYTHONVERSION_PYTHONLOCATION)</pythonLocation>
+        <PythonHome>$(USEPYTHONVERSION_PYTHONLOCATION)</PythonHome>
         <PythonLib>python37.lib</PythonLib>
       </PropertyGroup>
     </When>
   </Choose>
   <ItemDefinitionGroup />
   <ItemGroup>
-    <BuildMacro Include="pythonLocation">
-      <Value>$(pythonLocation)</Value>
+    <BuildMacro Include="PythonHome">
+      <Value>$(PythonHome)</Value>
     </BuildMacro>
     <BuildMacro Include="PythonLib">
       <Value>$(PythonLib)</Value>
