@@ -77,8 +77,8 @@ stages:
         Contents: 'excelbind.xll'
         TargetFolder: 'Binaries'
 
-- task: CmdLine@2
-  inputs:
-    script: |
-      cd binaries
-      dir
+    - task: CmdLine@2
+      inputs:
+        script: |
+          cd binaries
+          dir
