@@ -41,3 +41,6 @@ Pipfile.lock
 .vs/
 Debug/
 Release/
+
+# sphinx docs
+docs/_build
