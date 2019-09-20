@@ -9,7 +9,7 @@ variables:
   buildConfiguration: 'Release'
 
 stages:
-- stage: 'Build stage'
+- stage: 'Build_stage'
 
   jobs:
   - job: 'Build' 
@@ -55,7 +55,7 @@ stages:
         ArtifactName: '$(buildPlatform)'
         publishLocation: 'Container'
 
-- stage: 'Push artifacts'
+- stage: 'Push_artifacts'
   jobs:
   - job: 
     steps:
