@@ -10,4 +10,6 @@ pywin32 = "*"
 pandas = "*"
 numpy = "*"
 pytest = "*"
+sphinx = "==1.8.5"
+sphinx_rtd_theme = "*"
 
