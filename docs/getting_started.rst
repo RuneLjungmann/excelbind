@@ -9,6 +9,9 @@ Before you get started, you need Excel and Python installed on your machine.
 
 You are now ready to get up and running in a few steps:
 
+- Download the Excelbind repository from `Github <https://github.com/RuneLjungmann/excelbind>`_
+    Choose the green 'Clone or download' button on the right hand side to download the code.
+
 - You need to set up a config file in your user directory.
     You can just copy the example config file examples/excelbind.conf to get started.
     The example file contains explanations of the various settings.

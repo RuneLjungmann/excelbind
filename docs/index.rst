@@ -2,7 +2,7 @@
 Excelbind - Expose your python code in Excel
 ============================================
 
-Excelbind is an Excel Add-in, that expose your python code to Excel users in an easy and userfriendly way.
+Excelbind is a free open-source Excel Add-in, that expose your python code to Excel users in an easy and userfriendly way.
 
 Excelbind uses the Excel xll api together with an embedded python interpreter,
 so your python code runs within the Excel process. This means that the overhead of calling a python function is just a few nano seconds.
@@ -23,12 +23,14 @@ To write python code directly inside Excel just use the execute_python function:
 
 For more info on how to use Excelbind see the :doc:`getting_started` section.
 
+The code and Add-in available at `GitHub <https://github.com/RuneLjungmann/excelbind>`_.
+
 Requirements
 ------------
 - Excel 2007 or higher
 - Python 3.5 or higher
 
-If you want to build the project yourself you will also need
+If you want to build the project yourself you will also need:
 
 - Visual Studio 2015 or higher
 - The pipenv python package installed
