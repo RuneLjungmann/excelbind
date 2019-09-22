@@ -1,3 +1,5 @@
+.. meta::
+   :google-site-verification: 3-t0RDVvZu0ybpiusc6No1abuvIRCuKAygdTMBsJWdc
 
 Excelbind - Expose your python code in Excel
 ============================================
