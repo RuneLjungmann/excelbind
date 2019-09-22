@@ -58,3 +58,8 @@ def filter_dict(d: Dict, filter: str) -> Dict:
 @excelbind.function
 def dot(x: List, y: List) -> float:
     return sum(a*b for a, b in zip(x, y))
+
+
+@excelbind.function
+def no_arg() -> str:
+    return 'Hello world!'

@@ -1,6 +1,4 @@
 - Improve handling of functions with return type ndarrays (use FP directly)
-- Consider alternative handling of memory - will the static OPERS cause problems?
-- Readthedocs - or similar
 - Streaming api / RTD (COM server)
 - Expose general xll api to python when it makes sense
 - Ribbon configuration

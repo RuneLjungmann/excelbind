@@ -141,3 +141,17 @@ def test_list_in_various_directions(xll_addin_path):
             )
 
             assert excel.range('D1').value == 24.0
+
+
+def test_no_arg(xll_addin_path):
+    with set_env_vars('basic_functions'):
+        with Excel() as excel:
+            excel.register_xll(xll_addin_path)
+
+            (
+                excel.new_workbook()
+                .range('A1').set_formula('=excelbind.no_arg()')
+                .calculate()
+            )
+
+            assert excel.range('A1').value == 'Hello world!'

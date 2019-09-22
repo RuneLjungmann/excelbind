@@ -10,6 +10,7 @@ PythonFunctionAdapter::PythonFunctionAdapter(const std::string& python_function_
 	return_type_ = return_type;
 }
 
+xll::LPOPER PythonFunctionAdapter::fct0() { return fct({ }); }
 xll::LPOPER PythonFunctionAdapter::fct1(void* p0) { return fct({ p0 }); }
 xll::LPOPER PythonFunctionAdapter::fct2(void* p0, void* p1) { return fct({ p0, p1 }); }
 xll::LPOPER PythonFunctionAdapter::fct3(void* p0, void* p1, void* p2) { return fct({ p0, p1, p2 }); }
@@ -59,8 +60,9 @@ void* create_function_ptr(size_t num_arguments)
 {
 	switch (num_arguments)
 	{
-	case 1:	{ FCT_POINTER(1, void*) }
-	case 2: { FCT_POINTER(2, void*, void*) }
+    case 0: { FCT_POINTER(0) }
+    case 1: { FCT_POINTER(1, void*) }
+    case 2: { FCT_POINTER(2, void*, void*) }
 	case 3: { FCT_POINTER(3, void*, void*, void*) }
 	case 4: { FCT_POINTER(4, void*, void*, void*, void*) }
 	case 5: { FCT_POINTER(5, void*, void*, void*, void*, void*) }
