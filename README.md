@@ -21,7 +21,7 @@ To write python code directly inside Excel just use the execute_python function:
 
 ## Documentation
 
-The Excelbind documentation can be found at (https://excelbind.readthedocs.io/en/latest/)
+The Excelbind documentation can be found at https://excelbind.readthedocs.io/en/latest/
 
 ## Roadmap
 See the [TODO](TODO.md) file.

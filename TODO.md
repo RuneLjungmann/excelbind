@@ -1,4 +1,5 @@
 - Improve handling of functions with return type ndarrays (use FP directly)
+- Handle pandas data structures
+- Expose general xll api to python when it makes sense, volatile functions, menu functions etc
 - Streaming api / RTD (COM server)
-- Expose general xll api to python when it makes sense
 - Ribbon configuration
