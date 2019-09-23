@@ -1,5 +1,8 @@
 # Excelbind - expose your python code in Excel
 
+[![Documentation Status](https://readthedocs.org/projects/excelbind/badge/?version=latest)](https://excelbind.readthedocs.io/en/latest/?badge=latest)
+[![Build Status](https://dev.azure.com/runeljungmann/excelbind/_apis/build/status/RuneLjungmann.excelbind?branchName=master)](https://dev.azure.com/runeljungmann/excelbind/_build/latest?definitionId=1&branchName=master)
+
 Excelbind is a free open-source Excel Add-in, that expose your python code to Excel users in an easy and userfriendly way.
 
 Excelbind uses the Excel xll api together with an embedded python interpreter,
