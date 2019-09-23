@@ -9,7 +9,7 @@
 namespace py = pybind11;
 
 
-enum class BindTypes { DOUBLE, STRING, ARRAY, BOOLEAN, OPER, DICT, LIST };
+enum class BindTypes { DOUBLE, STRING, ARRAY, BOOLEAN, OPER, DICT, LIST, DATETIME };
 
 
 std::string cast_string(const std::wstring& in);

@@ -3,8 +3,14 @@
 #include <codecvt>
 
 #include "pybind11/numpy.h"
+#include "date.h"
+#include "chrono.h"
 #include "type_conversion.h"
 
+using namespace date;
+
+typedef std::chrono::duration<double, std::ratio<60 * 60 * 24>> excel_datetime;
+constexpr auto excel_base_time_point = 1899_y / December / 30;
 
 std::string cast_string(const std::wstring& in)
 {
@@ -32,6 +38,7 @@ bool has_list_shape(const xll::OPER& in)
 {
     return in.isMulti() && (in.rows() == 1 || in.columns() == 1);
 }
+
 
 py::dict cast_oper_to_dict(const xll::OPER& in)
 {
@@ -183,6 +190,12 @@ py::object cast_xll_to_py(void* p, BindTypes type)
     {
         return cast_oper_to_list(*(xll::OPER*)(p));
     }
+    case BindTypes::DATETIME:
+    {
+        double excel_date = (*(double*)(p));
+        excel_datetime ndays = excel_datetime(excel_date);
+        return py::cast(std::chrono::system_clock::time_point(sys_days(excel_base_time_point)) + round<std::chrono::system_clock::duration>(ndays));
+    }
     default:
 		return py::object();
 	}
@@ -223,6 +236,14 @@ void cast_py_to_xll(const py::object& in, xll::OPER& out, BindTypes type)
     case BindTypes::LIST:
         cast_list_to_oper(in.cast<py::list>(), out);
         break;
+    case BindTypes::DATETIME:
+    {
+        std::chrono::system_clock::time_point time_point = in.cast<std::chrono::system_clock::time_point>();
+        std::chrono::duration duration = time_point - sys_days(excel_base_time_point);
+        excel_datetime ndays = std::chrono::duration_cast<excel_datetime>(duration);
+        out = ndays.count();
+        break;
+    }
     default:
 		break;
 	}
@@ -240,7 +261,9 @@ BindTypes get_bind_type(const std::string& py_type_name)
         { "bool", BindTypes::BOOLEAN },
         { "Any", BindTypes::OPER },
         { "Dict", BindTypes::DICT },
-        { "List", BindTypes::LIST }
+        { "List", BindTypes::LIST },
+        { "datetime", BindTypes::DATETIME },
+        { "datetime.datetime", BindTypes::DATETIME }
     };
 
 	auto i = typeConversionMap.find(py_type_name);
@@ -261,7 +284,8 @@ std::wstring get_xll_type(BindTypes type)
         { BindTypes::BOOLEAN, XLL_BOOL_ },
         { BindTypes::OPER, XLL_LPOPER },
         { BindTypes::DICT, XLL_LPOPER },
-        { BindTypes::LIST, XLL_LPOPER }
+        { BindTypes::LIST, XLL_LPOPER },
+        { BindTypes::DATETIME, XLL_DOUBLE_ }
     };
 	return conversionMap.find(type)->second;
 }

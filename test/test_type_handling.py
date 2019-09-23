@@ -155,3 +155,44 @@ def test_no_arg(xll_addin_path):
             )
 
             assert excel.range('A1').value == 'Hello world!'
+
+
+def test_date_to_python(xll_addin_path):
+    with set_env_vars('basic_functions'):
+        with Excel() as excel:
+            excel.register_xll(xll_addin_path)
+
+            (
+                excel.new_workbook()
+                .range('A1').set(29261)  # 1980-02-10
+                .range('A2').set(33090)  # 1990-08-05
+                .range('A3').set(25204)  # 1969-01-01
+                .range('A4').set(25569)  # 1970-01-01
+                .range('A5').set(36193.9549882755000000)  # 1999-02-02 22:55:11.987
+                .range('B1').set_formula('=excelbind.date_as_string(A1)')
+                .range('B2').set_formula('=excelbind.date_as_string(A2)')
+                .range('B3').set_formula('=excelbind.date_as_string(A3)')
+                .range('B4').set_formula('=excelbind.date_as_string(A4)')
+                .range('B5').set_formula('=excelbind.date_as_string(A5)')
+                .calculate()
+            )
+
+            assert excel.range('B1').value == '1980-02-10 00:00:00'
+            assert excel.range('B2').value == '1990-08-05 00:00:00'
+            assert excel.range('B3').value == '1969-01-01 00:00:00'
+            assert excel.range('B4').value == '1970-01-01 00:00:00'
+            assert excel.range('B5').value[:-3] == '1999-02-02 22:55:10.987'
+
+def test_date_conversion(xll_addin_path):
+    with set_env_vars('basic_functions'):
+        with Excel() as excel:
+            excel.register_xll(xll_addin_path)
+
+            (
+                excel.new_workbook()
+                .range('A1').set(29261)  # 1980-02-10
+                .range('B1').set_formula('=excelbind.just_the_date(A1)')
+                .calculate()
+            )
+
+            assert excel.range('B1').value == excel.range('A1').value

@@ -195,6 +195,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="chrono.h" />
     <ClInclude Include="configuration.h" />
     <ClInclude Include="python_function_adapter.h" />
     <ClInclude Include="script_manager.h" />

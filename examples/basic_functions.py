@@ -1,4 +1,5 @@
 from typing import List, Dict
+import datetime
 import numpy as np
 
 import excelbind
@@ -63,3 +64,13 @@ def dot(x: List, y: List) -> float:
 @excelbind.function
 def no_arg() -> str:
     return 'Hello world!'
+
+
+@excelbind.function
+def date_as_string(d: datetime.datetime) -> str:
+    return str(d)
+
+
+@excelbind.function
+def just_the_date(d: datetime.datetime) -> datetime.datetime:
+    return d

@@ -52,8 +52,10 @@ A very mature project, which provides Excel xll bindings for C#.
 Especially the semi-dynamic exposure of functions in the dll api
 using a thunks table is inspired by the way this is handled in ExcelDNA.
 
-Excelbind uses a `headers only version <https://github.com/jtilly/inih>`_
-of `inih <https://github.com/benhoyt/inih>`_ for parsing ini files.
+Excelbind also uses:
+
+- A `headers only version <https://github.com/jtilly/inih>`_ of `inih <https://github.com/benhoyt/inih>`_ for parsing ini files.
+- The `date library <https://github.com/HowardHinnant/date>`_ by Howard Hinnant.
 
 There are at least two other projects solving a similar problem to Excelbind:
 
