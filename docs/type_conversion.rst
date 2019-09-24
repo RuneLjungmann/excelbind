@@ -17,7 +17,7 @@ You should however strive to use type annotations when possible.
 - It will give better performance, as Excelbind does not need to guess the type from the input, but knows it up front.
 - For floats and strings Excel will do an initial type check, so if you tried to pass a string when your type annotation said float, Excel will not try to call the function, but return an error right away.
 
-Note that the *execute_python* function only works with types that are auto discoverable.
+Note that the *execute_python* function (See the :doc:`examples` section) only works with types that are auto discoverable.
 
 Type details
 ------------
