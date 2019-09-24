@@ -261,7 +261,9 @@ BindTypes get_bind_type(const std::string& py_type_name)
         { "bool", BindTypes::BOOLEAN },
         { "Any", BindTypes::OPER },
         { "Dict", BindTypes::DICT },
+        { "dict", BindTypes::DICT },
         { "List", BindTypes::LIST },
+        { "list", BindTypes::LIST },
         { "datetime", BindTypes::DATETIME },
         { "datetime.datetime", BindTypes::DATETIME }
     };

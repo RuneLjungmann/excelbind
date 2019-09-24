@@ -69,5 +69,6 @@ There are at least two other projects solving a similar problem to Excelbind:
    :caption: Contents:
 
    getting_started
+   type_conversion
    building
    troubleshooting
