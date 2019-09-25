@@ -10,7 +10,7 @@
 using namespace date;
 
 typedef std::chrono::duration<double, std::ratio<60 * 60 * 24>> excel_datetime;
-constexpr auto excel_base_time_point = 1899_y / December / 30;
+auto excel_base_time_point = 1899_y / December / 30;
 
 std::string cast_string(const std::wstring& in)
 {
@@ -102,7 +102,7 @@ py::object cast_oper_to_py(const xll::OPER& in)
 {
     if (in.isBool())
     {
-        return py::bool_(static_cast<bool>(in));
+        return py::bool_(in == TRUE);
     }
     else if (in.isInt())
     {
@@ -239,7 +239,7 @@ void cast_py_to_xll(const py::object& in, xll::OPER& out, BindTypes type)
     case BindTypes::DATETIME:
     {
         std::chrono::system_clock::time_point time_point = in.cast<std::chrono::system_clock::time_point>();
-        std::chrono::duration duration = time_point - sys_days(excel_base_time_point);
+        auto duration = time_point - sys_days(excel_base_time_point);
         excel_datetime ndays = std::chrono::duration_cast<excel_datetime>(duration);
         out = ndays.count();
         break;
