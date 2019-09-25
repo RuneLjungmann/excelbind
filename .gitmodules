@@ -1,9 +1,9 @@
-[submodule "src/thirdparty/xll12"]
-	path = src/thirdparty/xll12
-	url = https://github.com/keithalewis/xll12.git
 [submodule "src/thirdparty/pybind11"]
 	path = src/thirdparty/pybind11
 	url = https://github.com/pybind/pybind11.git
 [submodule "src/thirdparty/inih"]
 	path = src/thirdparty/inih
 	url = https://github.com/jtilly/inih.git
+[submodule "src/thirdparty/xll12"]
+	path = src/thirdparty/xll12
+	url = https://github.com/RuneLjungmann/xll12.git
