@@ -3,6 +3,8 @@
 #include <codecvt>
 
 #include "pybind11/numpy.h"
+#include "xll12/xll/defines.h"
+
 #include "date.h"
 #include "chrono.h"
 #include "type_conversion.h"

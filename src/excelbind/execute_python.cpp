@@ -1,7 +1,9 @@
 #include <Python.h>
 #include "pybind11/embed.h"
 
-#include "xll12/xll/xll.h"
+#include "xll12/xll/oper.h"
+#include "xll12/xll/addin.h"
+#include "xll12/xll/error.h"
 
 #include "type_conversion.h"
 #include "configuration.h"

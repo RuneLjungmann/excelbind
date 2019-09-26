@@ -16,6 +16,8 @@ The free function exposed to Excel (the f functions created in fct_exports.asm) 
 */
 #include <Python.h>
 #include "pybind11/embed.h"
+#include "xll12/xll/addin.h"
+#include "xll12/xll/error.h"
 
 #include "type_conversion.h"
 #include "python_function_adapter.h"

@@ -1,4 +1,5 @@
-#include "xll12/xll/xll.h"
+#include "xll12/xll/oper.h"
+#include "xll12/xll/auto.h"
 #include "configuration.h"
 #include "type_conversion.h"
 #include "script_manager.h"
