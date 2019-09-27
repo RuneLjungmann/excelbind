@@ -15,19 +15,27 @@ jobs:
       DebugWin32:
         buildPlatformPython: 'x86'
         buildPlatform: 'Win32'
-        config: 'Debug'
+        buildConfiguration: 'Debug'
+        vsNumber: 2019
+        vsName: 'Visual Studio 16 2019'
       Debugx64:
         buildPlatformPython: 'x64'
         buildPlatform: 'x64'
-        config: 'Debug'
+        buildConfiguration: 'Debug'
+        vsNumber: 2019
+        vsName: 'Visual Studio 16 2019'
       ReleaseWin32:
         buildPlatformPython: 'x86'
         buildPlatform: 'Win32'
-        config: 'Release'
+        buildConfiguration: 'Release'
+        vsNumber: 2019
+        vsName: 'Visual Studio 16 2019'
       Releasex64:
         buildPlatformPython: 'x64'
         buildPlatform: 'x64'
-        config: 'Release'
+        buildConfiguration: 'Release'
+        vsNumber: 2019
+        vsName: 'Visual Studio 16 2019'
 
   pool:
     vmImage: 'windows-latest'
@@ -50,8 +58,13 @@ jobs:
   - task: CmdLine@2
     inputs:
       script: |
-        make 2019 $(config) $(buildPlatform)
+        cmake -S src -B build/$(vsNumber)$(buildPlatform) -G $(vsName) -A $(buildPlatform)
 
+    - task: VSBuild@1
+      inputs:
+        solution: build/$(vsNumber)$(buildPlatform)/excelbind.sln
+        platform: '$(buildPlatform)'
+        configuration: '$(buildConfiguration)'
 
   - task: CmdLine@2
     inputs:
