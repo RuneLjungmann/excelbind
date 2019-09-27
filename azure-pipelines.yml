@@ -12,25 +12,13 @@ jobs:
 - job: 'Build'
   strategy:
     matrix:
-      DebugWin32:
-        buildPlatformPython: 'x86'
-        buildPlatform: 'Win32'
-        buildConfiguration: 'Debug'
-        vsNumber: 2019
-        vsName: 'Visual Studio 16 2019'
-      Debugx64:
-        buildPlatformPython: 'x64'
-        buildPlatform: 'x64'
-        buildConfiguration: 'Debug'
-        vsNumber: 2019
-        vsName: 'Visual Studio 16 2019'
-      ReleaseWin32:
+      2019_Release_Win32:
         buildPlatformPython: 'x86'
         buildPlatform: 'Win32'
         buildConfiguration: 'Release'
         vsNumber: 2019
         vsName: 'Visual Studio 16 2019'
-      Releasex64:
+      2019_Release_x64:
         buildPlatformPython: 'x64'
         buildPlatform: 'x64'
         buildConfiguration: 'Release'
