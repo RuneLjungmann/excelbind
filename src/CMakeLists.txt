@@ -56,6 +56,6 @@ target_link_libraries(excelbind ${PYTHON_HOME}/libs/${PYTHON_VERSION}$<$<CONFIG:
 target_link_libraries(excelbind xll12)
 
 add_custom_command(TARGET excelbind POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:excelbind> ${CMAKE_BINARY_DIR}/../Binaries/${CMAKE_GENERATOR_PLATFORM}/$<CONFIG>/excelbind.xll
-    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE_DIR:excelbind>/excelbind.pdb ${CMAKE_BINARY_DIR}/../Binaries/${CMAKE_GENERATOR_PLATFORM}/$<CONFIG>/excelbind.pdb
+    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:excelbind> ${CMAKE_BINARY_DIR}/../../Binaries/${CMAKE_GENERATOR_PLATFORM}/$<CONFIG>/excelbind.xll
+    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE_DIR:excelbind>/excelbind.pdb ${CMAKE_BINARY_DIR}/../../Binaries/${CMAKE_GENERATOR_PLATFORM}/$<CONFIG>/excelbind.pdb
 )

@@ -35,6 +35,7 @@ Requirements
 If you want to build the project yourself you will also need:
 
 - Visual Studio 2015 or higher
+- CMake version 3.1 or higher (comes automatically with Visual Studio 2019)
 - The pipenv python package installed
 
 Acknowledgments
