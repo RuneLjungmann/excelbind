@@ -33,7 +33,7 @@ IF "%~3" NEQ "x64" (
 cmake -S src -B build/%1%3 -G %VISUAL_STUDIO% -A %3
 if %errorlevel% NEQ 0 exit /b 1
 
-devenv build/%1%3/excelbind.sln /build "%2|%3"
+msbuild build/%1%3/excelbind.sln /t:Rebuild /p:Configuration=%2 /p:Platform=%3
 if %errorlevel% NEQ 0 exit /b 1
 
 GOTO EOF
