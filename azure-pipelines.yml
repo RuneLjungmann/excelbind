@@ -58,7 +58,7 @@ jobs:
   - task: CmdLine@2
     inputs:
       script: |
-        cmake -S src -B build/$(vsNumber)$(buildPlatform) -G $(vsName) -A $(buildPlatform)
+        cmake -S src -B build/$(vsNumber)$(buildPlatform) -G "$(vsName)" -A $(buildPlatform)
 
   - task: VSBuild@1
     inputs:
