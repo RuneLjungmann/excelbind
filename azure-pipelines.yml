@@ -62,7 +62,7 @@ jobs:
 
   - task: VSBuild@1
     inputs:
-      solution: build/$(vsNumber)$(buildPlatform)/excelbind.sln
+      solution: 'build/$(vsNumber)$(buildPlatform)/excelbind.sln'
       platform: '$(buildPlatform)'
       configuration: '$(buildConfiguration)'
 
