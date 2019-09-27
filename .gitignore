@@ -41,6 +41,13 @@ Pipfile.lock
 .vs/
 Debug/
 Release/
+!Binaries/x64/Release/
+!Binaries/x64/Debug/
+!Binaries/Win32/Release/
+!Binaries/Win32/Debug/
 
 # sphinx docs
 docs/_build
+
+# cmake
+build/
