@@ -43,7 +43,7 @@ xll::LPOPER PythonFunctionAdapter::fct(const std::initializer_list<void*>& args)
 
 		cast_py_to_xll(res_py, res_xll, return_type_);
 	}
-	catch (std::exception& e)
+	catch (const std::exception& e)
 	{
 		if (Configuration::is_error_messages_enabled())
 		{
@@ -75,6 +75,6 @@ void* create_function_ptr(size_t num_arguments)
 	case 9: { FCT_POINTER(9, void*, void*, void*, void*, void*, void*, void*, void*, void*) }
 	case 10: { FCT_POINTER(10, void*, void*, void*, void*, void*, void*, void*, void*, void*, void*) }
 	default:
-		throw new std::exception("A maximum of 10 arguments is supported for python functions.");
+		throw std::runtime_error("A maximum of 10 arguments is supported for python functions.");
 	}
 }

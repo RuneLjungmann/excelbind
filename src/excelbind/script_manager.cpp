@@ -1,4 +1,6 @@
+#include <experimental/filesystem>
 #include "xll12/xll/oper.h"
+#include "xll12/xll/error.h"
 #include "xll12/xll/auto.h"
 #include "configuration.h"
 #include "type_conversion.h"
@@ -65,13 +67,20 @@ def function(f):
 
 void set_virtual_env_python_interpreter()
 {
-    std::wstring virtual_env = cast_string(Configuration::virtual_env());
-    static std::wstring python_home = virtual_env + L"/Scripts";
+    const std::string virtual_env = Configuration::virtual_env();
+    if (!std::experimental::filesystem::exists(virtual_env + "/Scripts/python.exe"))
+    {
+        std::string error_msg = "Failed to find python interpreter " + virtual_env + "/Scripts/python.exe";
+        throw std::runtime_error(error_msg);
+    }
+                
+    std::wstring virtual_env_w = cast_string(virtual_env);
+    static std::wstring python_home = virtual_env_w + L"/Scripts";
     Py_SetPythonHome(python_home.c_str());
 
-    static std::wstring program_name = virtual_env + L"/Scripts/python.exe";
+    static std::wstring program_name = virtual_env_w + L"/Scripts/python.exe";
     Py_SetProgramName(program_name.c_str());
-    static std::wstring python_path = virtual_env + L"/Lib;" + virtual_env + L"/Lib/site-packages";
+    static std::wstring python_path = virtual_env_w + L"/Lib;" + virtual_env_w + L"/Lib/site-packages";
     Py_SetPath(python_path.c_str());
 }
 

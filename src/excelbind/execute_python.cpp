@@ -97,7 +97,7 @@ xll::LPOPER executePython(
         py::object res_py = locals["out_" SOME_UNIQUE_STR];
         cast_py_to_oper(res_py, res_xll);
     }
-    catch (std::exception& e)
+    catch (const std::exception& e)
     {
         if (Configuration::is_error_messages_enabled())
         {
