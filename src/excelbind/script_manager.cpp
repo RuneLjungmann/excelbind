@@ -1,3 +1,6 @@
+// to support vs2015 - we import filesytem as experimental
+#define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
+
 #include <experimental/filesystem>
 #include "xll12/xll/oper.h"
 #include "xll12/xll/error.h"
