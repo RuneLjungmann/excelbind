@@ -2,9 +2,7 @@
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 
 #include <experimental/filesystem>
-#include "xll12/xll/oper.h"
-#include "xll12/xll/error.h"
-#include "xll12/xll/auto.h"
+#include "xll12/xll/xll.h"
 #include "configuration.h"
 #include "type_conversion.h"
 #include "script_manager.h"

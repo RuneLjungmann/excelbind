@@ -1,6 +1,6 @@
 #define NOMINMAX
 #include <exception>
-#include "xll12/xll/error.h"
+#include "xll12/xll/xll.h"
 
 #include "script_manager.h"
 #include "python_function_adapter.h"

@@ -42,17 +42,23 @@ include_directories(${PYTHON_HOME}/include)
 add_library(excelbind SHARED ${SOURCES})
     
 add_compile_definitions(_LIB)
+add_compile_definitions(_WINDOWS)
+add_compile_definitions(EXCELBIND_EXPORTS)
+add_compile_definitions(_USRDLL)
+
 add_compile_definitions($<$<CONFIG:Debug>:_DEBUG>)
-target_compile_options(excelbind PUBLIC -WX -W4)
+add_compile_definitions($<$<NOT:$<CONFIG:Debug>>:NDEBUG>)
+
+add_compile_definitions($<$<PLATFORM_ID:Win32>:WIN32>)
+
+target_compile_options(excelbind PUBLIC -WX -W4 -D_SCL_SECURE_NO_WARNINGS)
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/thirdparty/xll12)
 
 
 target_link_options(excelbind PRIVATE /SAFESEH:NO /DEBUG:FULL)
 
-#Pybind needs to link to both python3x.lib and python3x_d.lib in debug mode!
 target_link_libraries(excelbind ${PYTHON_HOME}/libs/${PYTHON_VERSION}.lib)
-target_link_libraries(excelbind ${PYTHON_HOME}/libs/${PYTHON_VERSION}$<$<CONFIG:Debug>:_d>.lib)
 
 target_link_libraries(excelbind xll12)
 
