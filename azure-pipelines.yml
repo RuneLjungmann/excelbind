@@ -13,6 +13,7 @@ jobs:
   strategy:
     matrix:
       2015_Release_Win32:
+        pythonVersion: '3.6'
         buildPlatformPython: 'x86'
         buildPlatform: 'Win32'
         buildConfiguration: 'Release'
@@ -21,6 +22,7 @@ jobs:
         imageName: 'vs2015-win2012r2'
 
       2015_Release_x64:
+        pythonVersion: '3.6'
         buildPlatformPython: 'x64'
         buildPlatform: 'x64'
         buildConfiguration: 'Release'
@@ -28,7 +30,26 @@ jobs:
         vsName: 'Visual Studio 14 2015'
         imageName: 'vs2015-win2012r2'
 
+      2017_Release_Win32:
+        pythonVersion: '3.7'
+        buildPlatformPython: 'x86'
+        buildPlatform: 'Win32'
+        buildConfiguration: 'Release'
+        vsNumber: 2017
+        vsName: 'Visual Studio 15 2017'
+        imageName: 'vs2017-win2016'
+
+      2017_Release_x64:
+        pythonVersion: '3.7'
+        buildPlatformPython: 'x64'
+        buildPlatform: 'x64'
+        buildConfiguration: 'Release'
+        vsNumber: 2017
+        vsName: 'Visual Studio 15 2017'
+        imageName: 'vs2017-win2016'
+
       2019_Release_Win32:
+        pythonVersion: '3.7'
         buildPlatformPython: 'x86'
         buildPlatform: 'Win32'
         buildConfiguration: 'Release'
@@ -37,6 +58,7 @@ jobs:
         imageName: 'windows-latest'
 
       2019_Release_x64:
+        pythonVersion: '3.7'
         buildPlatformPython: 'x64'
         buildPlatform: 'x64'
         buildConfiguration: 'Release'
@@ -54,7 +76,7 @@ jobs:
     
   - task: UsePythonVersion@0
     inputs:
-      versionSpec: '3.7'
+      versionSpec: $(pythonVersion)
       addToPath: true
       architecture: $(buildPlatformPython)
 
