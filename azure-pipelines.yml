@@ -71,7 +71,7 @@ jobs:
       configuration: '$(buildConfiguration)'
 
   - task: CmdLine@2
-    condition: eq(vsNumber, 2019)
+    condition: eq(variables['vsNumber'], 2019)
     inputs:
       script: |
         git config user.email "53918463+RuneLjungmann@users.noreply.github.com"
