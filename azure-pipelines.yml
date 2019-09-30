@@ -75,6 +75,7 @@ jobs:
     persistCredentials: true
     
   - task: UsePythonVersion@0
+    condition: ne(variables['vsNumber'], 2015)
     inputs:
       versionSpec: $(pythonVersion)
       addToPath: true
