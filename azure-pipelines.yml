@@ -18,6 +18,7 @@ jobs:
         buildConfiguration: 'Release'
         vsNumber: 2015
         vsName: 'Visual Studio 14 2015'
+        imageName: 'vs2015-win2012r2'
 
       2015_Release_x64:
         buildPlatformPython: 'x64'
@@ -25,6 +26,7 @@ jobs:
         buildConfiguration: 'Release'
         vsNumber: 2015
         vsName: 'Visual Studio 14 2015'
+        imageName: 'vs2015-win2012r2'
 
       2019_Release_Win32:
         buildPlatformPython: 'x86'
@@ -32,6 +34,7 @@ jobs:
         buildConfiguration: 'Release'
         vsNumber: 2019
         vsName: 'Visual Studio 16 2019'
+        imageName: 'windows-latest'
 
       2019_Release_x64:
         buildPlatformPython: 'x64'
@@ -39,9 +42,10 @@ jobs:
         buildConfiguration: 'Release'
         vsNumber: 2019
         vsName: 'Visual Studio 16 2019'
+        imageName: 'windows-latest'
 
   pool:
-    vmImage: 'windows-latest'
+    vmImage: $(imageName)
 
   steps:
   - checkout: self
