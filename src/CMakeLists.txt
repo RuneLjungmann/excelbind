@@ -3,10 +3,13 @@ cmake_minimum_required (VERSION 3.1)
 project(excelbind CXX ASM_MASM)
 
 # set env var PYTHON_VERSION or change the lines below if you plan to build against python35 or python36.
-
-if(NOT PYTHON_VERSION)
+if(DEFINED ENV{PYTHON_VERSION})
+    set(PYTHON_VERSION $ENV{PYTHON_VERSION})
+else()
     set(PYTHON_VERSION python37)
 endif()
+
+
 
 # Checks if the USEPYTHONVERSION_PYTHONLOCATION env var is set
 # (by e.g. Azure pipeline) otherwise default to standard location for python installation.

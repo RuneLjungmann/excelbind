@@ -77,12 +77,13 @@ void set_virtual_env_python_interpreter()
                 
     std::wstring virtual_env_w = cast_string(virtual_env);
     static std::wstring python_home = virtual_env_w + L"/Scripts";
-    Py_SetPythonHome(python_home.c_str());
+    Py_SetPythonHome(const_cast<wchar_t*>(python_home.c_str()));
 
     static std::wstring program_name = virtual_env_w + L"/Scripts/python.exe";
-    Py_SetProgramName(program_name.c_str());
+    Py_SetProgramName(const_cast<wchar_t*>(program_name.c_str()));
+
     static std::wstring python_path = virtual_env_w + L"/Lib;" + virtual_env_w + L"/Lib/site-packages";
-    Py_SetPath(python_path.c_str());
+    Py_SetPath(const_cast<wchar_t*>(python_path.c_str()));
 }
 
 void init_virtual_env_paths()

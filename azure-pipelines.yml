@@ -14,6 +14,7 @@ jobs:
     matrix:
       2017_Release_Win32:
         pythonVersion: '3.7'
+        python_Version: 'python37'
         buildPlatformPython: 'x86'
         buildPlatform: 'Win32'
         buildConfiguration: 'Release'
@@ -23,6 +24,7 @@ jobs:
 
       2017_Release_x64:
         pythonVersion: '3.7'
+        python_Version: 'python37'
         buildPlatformPython: 'x64'
         buildPlatform: 'x64'
         buildConfiguration: 'Release'
@@ -32,6 +34,7 @@ jobs:
 
       2019_Release_Win32:
         pythonVersion: '3.7'
+        python_Version: 'python37'
         buildPlatformPython: 'x86'
         buildPlatform: 'Win32'
         buildConfiguration: 'Release'
@@ -41,6 +44,7 @@ jobs:
 
       2019_Release_x64_py37:
         pythonVersion: '3.7'
+        python_Version: 'python37'
         buildPlatformPython: 'x64'
         buildPlatform: 'x64'
         buildConfiguration: 'Release'
@@ -50,6 +54,7 @@ jobs:
 
       2019_Release_x64_py36:
         pythonVersion: '3.6'
+        python_Version: 'python36'
         buildPlatformPython: 'x64'
         buildPlatform: 'x64'
         buildConfiguration: 'Release'
@@ -59,6 +64,7 @@ jobs:
 
       2019_Release_x64_py35:
         pythonVersion: '3.5'
+        python_Version: 'python35'
         buildPlatformPython: 'x64'
         buildPlatform: 'x64'
         buildConfiguration: 'Release'
