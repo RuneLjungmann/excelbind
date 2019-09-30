@@ -12,12 +12,27 @@ jobs:
 - job: 'Build'
   strategy:
     matrix:
+      2015_Release_Win32:
+        buildPlatformPython: 'x86'
+        buildPlatform: 'Win32'
+        buildConfiguration: 'Release'
+        vsNumber: 2015
+        vsName: 'Visual Studio 14 2015'
+
+      2015_Release_x64:
+        buildPlatformPython: 'x64'
+        buildPlatform: 'x64'
+        buildConfiguration: 'Release'
+        vsNumber: 2015
+        vsName: 'Visual Studio 14 2015'
+
       2019_Release_Win32:
         buildPlatformPython: 'x86'
         buildPlatform: 'Win32'
         buildConfiguration: 'Release'
         vsNumber: 2019
         vsName: 'Visual Studio 16 2019'
+
       2019_Release_x64:
         buildPlatformPython: 'x64'
         buildPlatform: 'x64'
@@ -56,6 +71,7 @@ jobs:
       configuration: '$(buildConfiguration)'
 
   - task: CmdLine@2
+    condition: eq(variables[vsNumber], 2019)
     inputs:
       script: |
         git config user.email "53918463+RuneLjungmann@users.noreply.github.com"
