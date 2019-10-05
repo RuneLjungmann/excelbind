@@ -197,6 +197,12 @@ py::object cast_xll_to_py(void* p, BindTypes type)
         excel_datetime ndays = excel_datetime(excel_date);
         return py::cast(std::chrono::system_clock::time_point(sys_days(excel_base_time_point)) + round<std::chrono::system_clock::duration>(ndays));
     }
+    case BindTypes::PD_SERIES:
+    {
+        py::dict d = cast_oper_to_dict(*(xll::OPER*)(p));
+        py::module pandas = py::module::import("pandas");
+        return pandas.attr("Series")(d);
+    }
     default:
 		return py::object();
 	}
@@ -245,6 +251,11 @@ void cast_py_to_xll(const py::object& in, xll::OPER& out, BindTypes type)
         out = ndays.count();
         break;
     }
+    case BindTypes::PD_SERIES:
+    {
+        cast_dict_to_oper((in.attr("to_dict")()).cast<py::dict>(), out);
+        break;
+    }
     default:
 		break;
 	}
@@ -266,7 +277,10 @@ BindTypes get_bind_type(const std::string& py_type_name)
         { "List", BindTypes::LIST },
         { "list", BindTypes::LIST },
         { "datetime", BindTypes::DATETIME },
-        { "datetime.datetime", BindTypes::DATETIME }
+        { "datetime.datetime", BindTypes::DATETIME },
+        { "pd.Series", BindTypes::PD_SERIES },
+        { "pandas.Series", BindTypes::PD_SERIES },
+        { "Series", BindTypes::PD_SERIES }
     };
 
 	auto i = typeConversionMap.find(py_type_name);
@@ -288,7 +302,8 @@ std::wstring get_xll_type(BindTypes type)
         { BindTypes::OPER, XLL_LPOPER },
         { BindTypes::DICT, XLL_LPOPER },
         { BindTypes::LIST, XLL_LPOPER },
-        { BindTypes::DATETIME, XLL_DOUBLE_ }
+        { BindTypes::DATETIME, XLL_DOUBLE_ },
+        { BindTypes::PD_SERIES, XLL_LPOPER }
     };
 	return conversionMap.find(type)->second;
 }

@@ -1,6 +1,7 @@
 from typing import List, Dict
 import datetime
 import numpy as np
+import pandas as pd
 
 import excelbind
 
@@ -74,3 +75,8 @@ def date_as_string(d: datetime.datetime) -> str:
 @excelbind.function
 def just_the_date(d: datetime.datetime) -> datetime.datetime:
     return d
+
+
+@excelbind.function
+def pandas_series(s: pd.Series) -> pd.Series:
+    return s.abs()

@@ -183,6 +183,7 @@ def test_date_to_python(xll_addin_path):
             assert excel.range('B4').value == '1970-01-01 00:00:00'
             assert excel.range('B5').value[:-3] == '1999-02-02 22:55:10.987'
 
+
 def test_date_conversion(xll_addin_path):
     with set_env_vars('basic_functions'):
         with Excel() as excel:
@@ -196,3 +197,25 @@ def test_date_conversion(xll_addin_path):
             )
 
             assert excel.range('B1').value == excel.range('A1').value
+
+
+def test_pandas_series(xll_addin_path):
+    with set_env_vars('basic_functions'):
+        with Excel() as excel:
+            excel.register_xll(xll_addin_path)
+
+            (
+                excel.new_workbook()
+                .range('A1').set(1)
+                .range('B1').set(1.1)
+                .range('A2').set(2)
+                .range('B2').set(2.1)
+                .range('A3').set(3)
+                .range('B3').set(-1.1)
+                .range('C1:D3').set_formula('=excelbind.pandas_series(A1:B3)')
+                .calculate()
+            )
+
+            assert excel.range('D1').value == excel.range('B1').value
+            assert excel.range('D2').value == excel.range('B2').value
+            assert excel.range('D3').value == -excel.range('B3').value
