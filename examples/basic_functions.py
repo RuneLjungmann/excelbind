@@ -80,3 +80,8 @@ def just_the_date(d: datetime.datetime) -> datetime.datetime:
 @excelbind.function
 def pandas_series(s: pd.Series) -> pd.Series:
     return s.abs()
+
+
+@excelbind.function
+def pandas_series_sum(s: pd.Series) -> float:
+    return s.sum()

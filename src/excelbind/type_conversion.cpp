@@ -199,9 +199,10 @@ py::object cast_xll_to_py(void* p, BindTypes type)
     }
     case BindTypes::PD_SERIES:
     {
-        py::dict d = cast_oper_to_dict(*(xll::OPER*)(p));
+        const auto& oper = *(xll::OPER*)(p);
+        py::object data = has_list_shape(oper) ? static_cast<py::object>(cast_oper_to_list(oper)) : static_cast<py::object>(cast_oper_to_dict(oper));
         py::module pandas = py::module::import("pandas");
-        return pandas.attr("Series")(d);
+        return pandas.attr("Series")(data);
     }
     default:
 		return py::object();

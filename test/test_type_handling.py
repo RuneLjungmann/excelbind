@@ -1,3 +1,4 @@
+import pytest
 from test.utilities.env_vars import set_env_vars
 from test.utilities.excel import Excel
 
@@ -219,3 +220,25 @@ def test_pandas_series(xll_addin_path):
             assert excel.range('D1').value == excel.range('B1').value
             assert excel.range('D2').value == excel.range('B2').value
             assert excel.range('D3').value == -excel.range('B3').value
+
+
+def test_pandas_series_from_list(xll_addin_path):
+    with set_env_vars('basic_functions'):
+        with Excel() as excel:
+            excel.register_xll(xll_addin_path)
+
+            (
+                excel.new_workbook()
+                .range('A1').set(1)
+                .range('B1').set(1.2)
+                .range('A2').set(2)
+                .range('B2').set(2.1)
+                .range('A3').set(3)
+                .range('B3').set(-1.1)
+                .range('C1').set_formula('=excelbind.pandas_series_sum(A1:B3)')
+                .range('D1').set_formula('=excelbind.pandas_series_sum(B1:B3)')
+                .calculate()
+            )
+
+            assert excel.range('D1').value == excel.range('C1').value
+            assert excel.range('C1').value == pytest.approx(2.2, abs=1e-10)
