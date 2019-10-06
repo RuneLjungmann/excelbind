@@ -135,20 +135,20 @@ void cast_dataframe_to_oper(const py::object& in, xll::OPER& out)
 {
     py::list columns = py::list(in.attr("columns"));
     py::list index = py::list(in.attr("index"));
-    out = xll::OPER(static_cast<int>(index.size() + 1), columns.size() + 1);
+    out = xll::OPER(static_cast<int>(index.size() + 1), static_cast<int>(columns.size() + 1));
     for (size_t i = 0; i < index.size(); ++i)
     {
-        cast_py_to_oper(index[i], out(i + 1, 0));
+        cast_py_to_oper(index[i], out(static_cast<int>(i + 1), 0));
     }
     for (size_t i = 0; i < columns.size(); ++i)
     {
-        cast_py_to_oper(columns[i], out(0, i + 1));
+        cast_py_to_oper(columns[i], out(0, static_cast<int>(i + 1)));
     }
     for (size_t i = 0; i < index.size(); ++i)
     {
         for (size_t j = 0; j < columns.size(); ++j)
         {
-            cast_py_to_oper(in.attr("iat")[py::make_tuple(i, j)], out(i + 1, j + 1));
+            cast_py_to_oper(in.attr("iat")[py::make_tuple(i, j)], out(static_cast<int>(i + 1), static_cast<int>(j + 1)));
         }
     }
     out(0, 0) = L"";
