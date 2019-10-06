@@ -99,6 +99,60 @@ void cast_list_to_oper(const py::list& in, xll::OPER& out)
     }
 }
 
+py::object cast_oper_to_dataframe(const xll::OPER& in)
+{
+    bool hasIndices = in(0, 0).isMissing() || in(0, 0).isNil();
+    py::object indices = py::none();
+    if (hasIndices)
+    {
+        py::list indices_list;
+        for (int i = 1; i < in.rows(); ++i)
+        {
+            indices_list.append(cast_oper_to_py(in(i, 0)));
+        }
+        indices = indices_list;
+    }
+    py::list columns;
+    for (int i = hasIndices ? 1 : 0; i < in.columns(); ++i)
+    {
+        columns.append(cast_oper_to_py(in(0, i)));
+    }
+    py::list data;
+    for (int i = 1; i<in.rows(); ++i)
+    {
+        py::list row;
+        for (int j = hasIndices ? 1 : 0; j < in.columns(); ++j)
+        {
+            row.append(cast_oper_to_py(in(i, j)));
+        }
+        data.append(row);
+    }
+    py::module pandas = py::module::import("pandas");
+    return pandas.attr("DataFrame")(data, indices, columns);
+}
+
+void cast_dataframe_to_oper(const py::object& in, xll::OPER& out)
+{
+    py::list columns = py::list(in.attr("columns"));
+    py::list index = py::list(in.attr("index"));
+    out = xll::OPER(static_cast<int>(index.size() + 1), columns.size() + 1);
+    for (size_t i = 0; i < index.size(); ++i)
+    {
+        cast_py_to_oper(index[i], out(i + 1, 0));
+    }
+    for (size_t i = 0; i < columns.size(); ++i)
+    {
+        cast_py_to_oper(columns[i], out(0, i + 1));
+    }
+    for (size_t i = 0; i < index.size(); ++i)
+    {
+        for (size_t j = 0; j < columns.size(); ++j)
+        {
+            cast_py_to_oper(in.attr("iat")[py::make_tuple(i, j)], out(i + 1, j + 1));
+        }
+    }
+}
+
 py::object cast_oper_to_py(const xll::OPER& in)
 {
     if (in.isBool())
@@ -204,6 +258,10 @@ py::object cast_xll_to_py(void* p, BindTypes type)
         py::module pandas = py::module::import("pandas");
         return pandas.attr("Series")(data);
     }
+    case BindTypes::PD_DATAFRAME:
+    {
+        return cast_oper_to_dataframe(*(xll::OPER*)(p));
+    }
     default:
 		return py::object();
 	}
@@ -257,6 +315,11 @@ void cast_py_to_xll(const py::object& in, xll::OPER& out, BindTypes type)
         cast_dict_to_oper((in.attr("to_dict")()).cast<py::dict>(), out);
         break;
     }
+    case BindTypes::PD_DATAFRAME:
+    {
+        cast_dataframe_to_oper(in, out);
+        break;
+    }
     default:
 		break;
 	}
@@ -281,7 +344,10 @@ BindTypes get_bind_type(const std::string& py_type_name)
         { "datetime.datetime", BindTypes::DATETIME },
         { "pd.Series", BindTypes::PD_SERIES },
         { "pandas.Series", BindTypes::PD_SERIES },
-        { "Series", BindTypes::PD_SERIES }
+        { "Series", BindTypes::PD_SERIES },
+        { "pd.DataFrame", BindTypes::PD_DATAFRAME},
+        { "pandas.DataFrame", BindTypes::PD_DATAFRAME },
+        { "DataFrame", BindTypes::PD_DATAFRAME }
     };
 
 	auto i = typeConversionMap.find(py_type_name);
@@ -304,7 +370,8 @@ std::wstring get_xll_type(BindTypes type)
         { BindTypes::DICT, XLL_LPOPER },
         { BindTypes::LIST, XLL_LPOPER },
         { BindTypes::DATETIME, XLL_DOUBLE_ },
-        { BindTypes::PD_SERIES, XLL_LPOPER }
+        { BindTypes::PD_SERIES, XLL_LPOPER },
+        { BindTypes::PD_DATAFRAME, XLL_LPOPER }
     };
 	return conversionMap.find(type)->second;
 }
