@@ -242,3 +242,38 @@ def test_pandas_series_from_list(xll_addin_path):
 
             assert excel.range('D1').value == excel.range('C1').value
             assert excel.range('C1').value == pytest.approx(2.2, abs=1e-10)
+
+
+def test_pandas_dataframe(xll_addin_path):
+    with set_env_vars('basic_functions'):
+        with Excel() as excel:
+            excel.register_xll(xll_addin_path)
+
+            (
+                excel.new_workbook()
+                .range('B1').set("A")
+                .range('C1').set("B")
+                .range('A2').set(1)
+                .range('B2').set(1.2)
+                .range('C2').set(2.2)
+                .range('A3').set(2)
+                .range('B3').set(2.1)
+                .range('C3').set(3.1)
+                .range('A4').set(3)
+                .range('B4').set(-1.1)
+                .range('C4').set(-2.1)
+                .range('D1:F4').set_formula('=excelbind.pandas_dataframe(A1:C4)')
+                .range('G1').set_formula('=sum(B2:C4)')
+                .range('H1').set_formula('=sum(E2:F4)')
+                .calculate()
+            )
+
+            assert excel.range('D1').value == ""
+            assert excel.range('A2').value == excel.range('D2').value
+            assert excel.range('A3').value == excel.range('D3').value
+            assert excel.range('A4').value == excel.range('D4').value
+
+            assert excel.range('B1').value == excel.range('E1').value
+            assert excel.range('C1').value == excel.range('F1').value
+
+            assert excel.range('H1').value == excel.range('G1').value + 6*2

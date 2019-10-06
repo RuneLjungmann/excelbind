@@ -85,3 +85,8 @@ def pandas_series(s: pd.Series) -> pd.Series:
 @excelbind.function
 def pandas_series_sum(s: pd.Series) -> float:
     return s.sum()
+
+
+@excelbind.function
+def pandas_dataframe(df: pd.DataFrame) -> pd.DataFrame:
+    return df + 2

@@ -151,6 +151,7 @@ void cast_dataframe_to_oper(const py::object& in, xll::OPER& out)
             cast_py_to_oper(in.attr("iat")[py::make_tuple(i, j)], out(i + 1, j + 1));
         }
     }
+    out(0, 0) = L"";
 }
 
 py::object cast_oper_to_py(const xll::OPER& in)
