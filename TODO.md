@@ -1,5 +1,9 @@
-- Handle pandas data structures
-- Improve handling of functions with return type ndarrays (use FP directly)
-- Expose general xll api to python when it makes sense, volatile functions, menu functions etc
+- Expose general xll api to python when it makes sense such as:
+    - volatile functions
+    - menu functions
+    - control pop-ups from python
+    - async functions
+    - cancellations
+    - flags indicating if a function is called from the function wizard
 - Streaming api / RTD (COM server)
 - Ribbon configuration

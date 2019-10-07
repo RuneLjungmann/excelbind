@@ -45,3 +45,11 @@ Note that due to `Excels special handling of the year 1900 as a leap year
 <https://support.microsoft.com/en-us/help/214326/excel-incorrectly-assumes-that-the-year-1900-is-a-leap-year>`_,
 and in order to simplify the internal implementation, Excelbind will not convert days between 1900-01-01 and 1900-03-01 correctly.
 In an Excel context this is most likely not a problem.
+
+Pandas data structures
+^^^^^^^^^^^^^^^^^^^^^^
+Excelbind supports both Pandas Series and DataFrames.
+It will recognise a type as ``Series`` if the type annotation says *Series*, *pd.Series* or *pandas.Series*.
+It will recognise a type as ``DataFrame`` if the type annotation says *DataFrame*, *pd.DataFrame* or *pandas.DataFrame*
+
+For both data structures it is optional to supply a row/column of indices..
