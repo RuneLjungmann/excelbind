@@ -1,5 +1,4 @@
 - Expose general xll api to python when it makes sense such as:
-    - volatile functions
     - menu functions
     - control pop-ups from python
     - async functions

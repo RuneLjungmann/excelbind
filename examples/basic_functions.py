@@ -1,4 +1,5 @@
 from typing import List, Dict
+import time
 import datetime
 import numpy as np
 import pandas as pd
@@ -90,3 +91,8 @@ def pandas_series_sum(s: pd.Series) -> float:
 @excelbind.function
 def pandas_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     return df + 2
+
+
+@excelbind.function(is_volatile=True)
+def the_time():
+    return time.clock()

@@ -1,4 +1,5 @@
 import pytest
+import time
 from test.utilities.env_vars import set_env_vars
 from test.utilities.excel import Excel
 
@@ -277,3 +278,22 @@ def test_pandas_dataframe(xll_addin_path):
             assert excel.range('C1').value == excel.range('F1').value
 
             assert excel.range('H1').value == excel.range('G1').value + 6*2
+
+
+def test_volatile_function(xll_addin_path):
+    with set_env_vars('basic_functions'):
+        with Excel() as excel:
+            excel.register_xll(xll_addin_path)
+
+            (
+                excel.new_workbook()
+                .range('A1').set_formula('=excelbind.the_time()')
+                .calculate()
+            )
+
+            time1 = excel.range('A1').value
+            time.sleep(0.1)
+            excel.calculate()
+            time2 = excel.range('A1').value
+
+            assert time1 != time2

@@ -43,7 +43,7 @@ std::vector<std::wstring> cast_list(const py::list& in)
 
 void register_python_function(
     const py::str& function_name_py, const py::list& argument_names_py, const py::list& argument_types_py,
-    const py::list& argument_docs_py, const py::str& return_type_py, const py::str & function_doc
+    const py::list& argument_docs_py, const py::str& return_type_py, const py::str & function_doc, const py::bool_ is_volatile
 )
 {
 	static int function_index = 0;
@@ -84,7 +84,10 @@ void register_python_function(
     {
         functionBuilder.Arg(get_xll_type(argument_types[i]).c_str(), argument_names[i].c_str(), argument_docs[i].c_str());
     }
-
+    if (is_volatile)
+    {
+        functionBuilder.Volatile();
+    }
     xll::AddIn function = xll::AddIn(functionBuilder);
     ++function_index;
 }
