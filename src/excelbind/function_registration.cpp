@@ -14,6 +14,7 @@ More concretely, when a python function is registered, an adapter object is crea
 pointers to both the object and the member function are stored in thunks_objects and thunks_methods respectively.
 The free function exposed to Excel (the f functions created in fct_exports.asm) then moves the object adress to ecx/rcx and jumps to the member function.
 */
+#include <corecrt.h>
 #include "pybind11/embed.h"
 #include "xll12/xll/xll.h"
 

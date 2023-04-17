@@ -1,3 +1,4 @@
+#include <corecrt.h>
 #include "pybind11/embed.h"
 
 #include "xll12/xll/xll.h"

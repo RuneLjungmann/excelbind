@@ -13,7 +13,11 @@ IF "%~1" == "2015" (
         IF "%~1" == "2019" (
             SET VISUAL_STUDIO="Visual Studio 16 2019"
         ) ELSE (
-            GOTO Error
+            IF "%~1" == "2022" (
+                SET VISUAL_STUDIO="Visual Studio 17 2022"
+            ) ELSE (
+                GOTO Error
+            )   
         )   
     )
 )
@@ -40,6 +44,6 @@ GOTO EOF
 
 :Error
 echo "Calling convention is 'make compilerVersion configuration platform'"
-echo "Where compilerVersion in [2015, 2017, 2019], configuration in [Release, Debug] and platform in [x86, x64]"
+echo "Where compilerVersion in [2015, 2017, 2019, 2022], configuration in [Release, Debug] and platform in [x86, x64]"
 exit /b 1
 :EOF

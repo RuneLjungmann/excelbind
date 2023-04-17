@@ -6,7 +6,7 @@ project(excelbind CXX ASM_MASM)
 if(DEFINED ENV{PYTHON_VERSION})
     set(PYTHON_VERSION $ENV{PYTHON_VERSION})
 else()
-    set(PYTHON_VERSION python37)
+    set(PYTHON_VERSION python310)
 endif()
 
 
@@ -16,9 +16,9 @@ endif()
 if(DEFINED ENV{USEPYTHONVERSION_PYTHONLOCATION})
     set(PYTHON_HOME $ENV{USEPYTHONVERSION_PYTHONLOCATION})
 elseif("${CMAKE_GENERATOR_PLATFORM}" STREQUAL "Win32")
-    set(PYTHON_HOME c:/${PYTHON_VERSION})
+    set(PYTHON_HOME $ENV{USERPROFILE}/AppData/Local/Programs/Python/${PYTHON_VERSION}-32)
 else()
-    set(PYTHON_HOME c:/${PYTHON_VERSION}_x64)    
+    set(PYTHON_HOME $ENV{USERPROFILE}/AppData/Local/Programs/Python/${PYTHON_VERSION})
 endif()
 
 file(GLOB SOURCES
@@ -54,7 +54,7 @@ add_compile_definitions($<$<NOT:$<CONFIG:Debug>>:NDEBUG>)
 
 add_compile_definitions($<$<PLATFORM_ID:Win32>:WIN32>)
 
-target_compile_options(excelbind PUBLIC -WX -W4 -D_SCL_SECURE_NO_WARNINGS)
+target_compile_options(excelbind PUBLIC -WX -D_SCL_SECURE_NO_WARNINGS)
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/thirdparty/xll12)
 
