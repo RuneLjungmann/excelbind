@@ -2,6 +2,7 @@
 #define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 
 #include <experimental/filesystem>
+#include <filesystem>
 #include "xll12/xll/xll.h"
 #include "configuration.h"
 #include "type_conversion.h"
@@ -82,16 +83,20 @@ void set_virtual_env_python_interpreter()
         std::string error_msg = "Failed to find python interpreter " + virtual_env + "/Scripts/python.exe";
         throw std::runtime_error(error_msg);
     }
-                
+             
+    PyStatus status;
+    PyConfig config;
+    PyConfig_InitPythonConfig(&config);
+
     std::wstring virtual_env_w = cast_string(virtual_env);
     static std::wstring python_home = virtual_env_w + L"/Scripts";
-    Py_SetPythonHome(const_cast<wchar_t*>(python_home.c_str()));
+    status = PyConfig_SetString(&config, &config.home, const_cast<wchar_t*>(python_home.c_str()));
 
     static std::wstring program_name = virtual_env_w + L"/Scripts/python.exe";
-    Py_SetProgramName(const_cast<wchar_t*>(program_name.c_str()));
+    status = PyConfig_SetString(&config, &config.program_name, const_cast<wchar_t*>(program_name.c_str()));
 
     static std::wstring python_path = virtual_env_w + L"/Lib;" + virtual_env_w + L"/Lib/site-packages";
-    Py_SetPath(const_cast<wchar_t*>(python_path.c_str()));
+    status = PyConfig_SetString(&config, &config.pythonpath_env, const_cast<wchar_t*>(python_path.c_str()));
 }
 
 void init_virtual_env_paths()
