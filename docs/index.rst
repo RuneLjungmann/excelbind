@@ -30,12 +30,12 @@ The code and Add-in available at `GitHub <https://github.com/RuneLjungmann/excel
 Requirements
 ------------
 - Excel 2007 or higher
-- Python 3.5 or higher
+- Python 3.10 or higher
 
 If you want to build the project yourself you will also need:
 
-- Visual Studio 2015 or higher
-- CMake version 3.1 or higher (comes automatically with Visual Studio 2019)
+- Visual Studio 2022
+- CMake version 3.10 or higher
 - The pipenv python package installed
 
 Acknowledgments
