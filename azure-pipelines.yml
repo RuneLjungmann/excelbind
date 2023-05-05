@@ -12,64 +12,35 @@ jobs:
 - job: 'Build'
   strategy:
     matrix:
-      2017_Release_Win32:
-        pythonVersion: '3.7'
-        python_Version: 'python37'
+      2022_Release_Win32:
+        pythonVersion: '3.11'
+        python_Version: 'python311'
         buildPlatformPython: 'x86'
         buildPlatform: 'Win32'
         buildConfiguration: 'Release'
-        vsNumber: 2017
-        vsName: 'Visual Studio 15 2017'
-        imageName: 'vs2017-win2016'
-
-      2017_Release_x64:
-        pythonVersion: '3.7'
-        python_Version: 'python37'
-        buildPlatformPython: 'x64'
-        buildPlatform: 'x64'
-        buildConfiguration: 'Release'
-        vsNumber: 2017
-        vsName: 'Visual Studio 15 2017'
-        imageName: 'vs2017-win2016'
-
-      2019_Release_Win32:
-        pythonVersion: '3.7'
-        python_Version: 'python37'
-        buildPlatformPython: 'x86'
-        buildPlatform: 'Win32'
-        buildConfiguration: 'Release'
-        vsNumber: 2019
-        vsName: 'Visual Studio 16 2019'
+        vsNumber: 2022
+        vsName: 'Visual Studio 17 2022'
         imageName: 'windows-latest'
 
-      2019_Release_x64_py37:
-        pythonVersion: '3.7'
-        python_Version: 'python37'
+      2022_Release_x64_py311:
+        pythonVersion: '3.11'
+        python_Version: 'python311'
         buildPlatformPython: 'x64'
         buildPlatform: 'x64'
         buildConfiguration: 'Release'
-        vsNumber: 2019
-        vsName: 'Visual Studio 16 2019'
+        vsNumber: 2022
+        vsName: 'Visual Studio 17 2022'
         imageName: 'windows-latest'
 
-      2019_Release_x64_py36:
-        pythonVersion: '3.6'
-        python_Version: 'python36'
-        buildPlatformPython: 'x64'
-        buildPlatform: 'x64'
-        buildConfiguration: 'Release'
-        vsNumber: 2019
-        vsName: 'Visual Studio 16 2019'
-        imageName: 'windows-latest'
 
-      2019_Release_x64_py35:
-        pythonVersion: '3.5'
-        python_Version: 'python35'
+      2022_Release_x64_py310:
+        pythonVersion: '3.10'
+        python_Version: 'python310'
         buildPlatformPython: 'x64'
         buildPlatform: 'x64'
         buildConfiguration: 'Release'
-        vsNumber: 2019
-        vsName: 'Visual Studio 16 2019'
+        vsNumber: 2022
+        vsName: 'Visual Studio 17 2022'
         imageName: 'windows-latest'
 
   pool:
