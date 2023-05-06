@@ -36,6 +36,6 @@ GOTO EOF
 
 :Error
 echo "Calling convention is 'make compilerVersion configuration platform'"
-echo "Where compilerVersion in [2019, 2022], configuration in [Release, Debug] and platform in [x86, x64]"
+echo "Where compilerVersion in [2019, 2022], configuration in [Release, Debug] and platform in [Win32, x64]"
 exit /b 1
 :EOF

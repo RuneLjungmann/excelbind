@@ -3,7 +3,7 @@ Getting Started
 
 Before you get started, you need Excel and Python installed on your machine.
 
-- You need Excel 2007 or higher and Python 3.5 or higher.
+- You need Excel 2007 or higher and Python 3.10 or higher.
 - Make sure they are either both x86 or x64 - see the :doc:`troubleshooting` section if in doubt.
 - You need the location of Python in your PATH environment variable
 

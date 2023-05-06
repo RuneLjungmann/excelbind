@@ -7,11 +7,11 @@ There is a small batch file available to run cmake and build the solution.
 
 To use this, start a visual studio command prompt (Search for 'Developer Command Prompt') and type e.g.::
 
-    make 2019 Release x64
+    make 2022 Release x64
 
-To create solution files and build the solution using Visual Studio 2019.
+To create solution files and build the solution using Visual Studio 2022.
 
-The solution file will now be located in build/2019x64 and you can open it in the Visual Studio IDE.
+The solution file will now be located in build/2022x64 and you can open it in the Visual Studio IDE.
 
 The excelbind.xll is now located under Binaries/x64/Release subfolder.
 
